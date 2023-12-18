@@ -25,11 +25,13 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   checkLoggedIn() {
-    bool? isLogged = PreferencesService.prefs?.getBool("loggedIn");
-    if (isLogged == null) {
-      return false;
-    }
-    return true;
+    bool isLogged = PreferencesService.prefs?.getBool("loggedIn") ?? false;
+    return isLogged;
+  }
+
+  checkKey() {
+    bool isLogged = PreferencesService.prefs?.containsKey("loggedIn") ?? false;
+    return isLogged;
   }
 
   @override
