@@ -9,7 +9,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? email = PreferencesService.prefs?.getString("email");
+    String? email = PreferencesService.prefs?.getString("email") ?? "";
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF868365),
