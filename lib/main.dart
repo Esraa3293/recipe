@@ -26,6 +26,15 @@ class MyApplication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+          inputDecorationTheme: InputDecorationTheme(
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: const BorderSide(color: Colors.grey)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: const BorderSide(color: Colors.grey)),
+      )),
       debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.routeName,
       routes: {
