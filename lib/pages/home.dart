@@ -16,9 +16,9 @@ class HomeScreen extends StatelessWidget {
         title: Text("Welcome $email"),
         actions: [
           IconButton(
-            onPressed: () {
-              PreferencesService.prefs?.remove("loggedIn");
+            onPressed: () async {
               Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+              await PreferencesService.prefs?.remove("loggedIn");
             },
             icon: const Icon(Icons.logout),
           )
