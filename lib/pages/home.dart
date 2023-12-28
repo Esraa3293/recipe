@@ -86,8 +86,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: () {
                         sliderIndex--;
                         if (sliderIndex == -1) {
-                          // sliderIndex = meals.length-1;
-                          sliderIndex = meals.indexOf(meals.last);
+                          sliderIndex = meals.length - 1;
+                          // sliderIndex = meals.indexOf(meals.last);
                         }
                         setState(() {});
                       },
@@ -97,8 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: () {
                         sliderIndex++;
                         if (sliderIndex == meals.length) {
-                          // sliderIndex = 0;
-                          sliderIndex = meals.indexOf(meals.first);
+                          sliderIndex = 0;
+                          // sliderIndex = meals.indexOf(meals.first);
                         }
                         setState(() {});
                       },
