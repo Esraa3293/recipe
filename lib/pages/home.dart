@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:recipe/utils/images.dart';
 
 import '../services/preferences.service.dart';
-import 'login.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "home";
@@ -33,17 +32,31 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            backgroundColor: const Color(0xFF868365),
-            title: Text("Welcome $email"),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(
-                      context, LoginScreen.routeName);
-                  PreferencesService.prefs?.remove("loggedIn");
-                },
-                icon: const Icon(Icons.logout),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            // title: Text("Welcome $email"),
+            leading: const Icon(
+              Icons.menu,
+              color: Colors.black,
+            ),
+            actions: const [
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Badge(
+                    alignment: Alignment.topRight,
+                    child: Icon(
+                      Icons.notifications_none,
+                      color: Colors.black,
+                    )),
               )
+              // IconButton(
+              //   onPressed: () {
+              //     Navigator.pushReplacementNamed(
+              //         context, LoginScreen.routeName);
+              //     PreferencesService.prefs?.remove("loggedIn");
+              //   },
+              //   icon: const Icon(Icons.logout),
+              // )
             ],
           ),
           body: Column(
@@ -68,68 +81,69 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                       ),
                       items: meals.map((i) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                            decoration:
-                                const BoxDecoration(color: Colors.amber),
-                            child: Image.asset(
-                              meals[sliderIndex],
-                              scale: .8,
-                            ));
-                      },
-                    );
-                  }).toList(),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        sliderIndex--;
-                        if (sliderIndex == -1) {
-                          sliderIndex = meals.length - 1;
-                          // sliderIndex = meals.indexOf(meals.last);
-                        }
-                        setState(() {});
-                      },
-                      icon: const Icon(Icons.arrow_back_ios),
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5.0),
+                                decoration:
+                                    const BoxDecoration(color: Colors.amber),
+                                child: Image.asset(
+                                  meals[sliderIndex],
+                                  scale: .8,
+                                ));
+                          },
+                        );
+                      }).toList(),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        sliderIndex++;
-                        if (sliderIndex == meals.length) {
-                          sliderIndex = 0;
-                          // sliderIndex = meals.indexOf(meals.first);
-                        }
-                        setState(() {});
-                      },
-                      icon: const Icon(Icons.arrow_forward_ios),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            sliderIndex--;
+                            if (sliderIndex == -1) {
+                              sliderIndex = meals.length - 1;
+                              // sliderIndex = meals.indexOf(meals.last);
+                            }
+                            setState(() {});
+                          },
+                          icon: const Icon(Icons.arrow_back_ios),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            sliderIndex++;
+                            if (sliderIndex == meals.length) {
+                              sliderIndex = 0;
+                              // sliderIndex = meals.indexOf(meals.first);
+                            }
+                            setState(() {});
+                          },
+                          icon: const Icon(Icons.arrow_forward_ios),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          DotsIndicator(
-            dotsCount: meals.length,
-            position: sliderIndex,
-            onTap: (position) async {
-              await carouselController.animateToPage(position);
-              sliderIndex = position;
-              setState(() {});
-            },
-            decorator: DotsDecorator(
-              size: const Size.square(9.0),
-              activeSize: const Size(18.0, 9.0),
-              activeShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0)),
-            ),
-          )
-        ],
-      )),
+              ),
+              DotsIndicator(
+                dotsCount: meals.length,
+                position: sliderIndex,
+                onTap: (position) async {
+                  await carouselController.animateToPage(position);
+                  sliderIndex = position;
+                  setState(() {});
+                },
+                decorator: DotsDecorator(
+                  size: const Size.square(9.0),
+                  activeSize: const Size(18.0, 9.0),
+                  activeShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0)),
+                ),
+              )
+            ],
+          )),
     );
   }
 }
