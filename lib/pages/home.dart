@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
             elevation: 0,
             // title: Text("Welcome $email"),
             leading: const Icon(
-              Icons.menu,
+              Icons.sort,
               color: Colors.black,
             ),
             actions: const [
@@ -59,11 +59,20 @@ class _HomeScreenState extends State<HomeScreen> {
               // )
             ],
           ),
-          body: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Stack(
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text("Bonjour, Emma"),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text("What would you like to cook today?"),
+                const SizedBox(
+                  height: 10,
+                ),
+                Stack(
                   alignment: Alignment.center,
                   children: [
                     CarouselSlider(
@@ -101,24 +110,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                          onPressed: () {
-                            sliderIndex--;
-                            if (sliderIndex == -1) {
-                              sliderIndex = meals.length - 1;
-                              // sliderIndex = meals.indexOf(meals.last);
-                            }
-                            setState(() {});
+                          onPressed: () async {
+                            await carouselController.previousPage();
+                            // sliderIndex--;
+                            // if (sliderIndex == -1) {
+                            //   sliderIndex = meals.length - 1;
+                            //   // sliderIndex = meals.indexOf(meals.last);
+                            // }
+                            // setState(() {});
                           },
                           icon: const Icon(Icons.arrow_back_ios),
                         ),
                         IconButton(
-                          onPressed: () {
-                            sliderIndex++;
-                            if (sliderIndex == meals.length) {
-                              sliderIndex = 0;
-                              // sliderIndex = meals.indexOf(meals.first);
-                            }
-                            setState(() {});
+                          onPressed: () async {
+                            await carouselController.nextPage();
+                            // sliderIndex++;
+                            // if (sliderIndex == meals.length) {
+                            //   sliderIndex = 0;
+                            //   // sliderIndex = meals.indexOf(meals.first);
+                            // }
+                            // setState(() {});
                           },
                           icon: const Icon(Icons.arrow_forward_ios),
                         ),
@@ -126,23 +137,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-              ),
-              DotsIndicator(
-                dotsCount: meals.length,
-                position: sliderIndex,
-                onTap: (position) async {
-                  await carouselController.animateToPage(position);
-                  sliderIndex = position;
-                  setState(() {});
-                },
-                decorator: DotsDecorator(
-                  size: const Size.square(9.0),
-                  activeSize: const Size(18.0, 9.0),
-                  activeShape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0)),
-                ),
-              )
-            ],
+                DotsIndicator(
+                  dotsCount: meals.length,
+                  position: sliderIndex,
+                  onTap: (position) async {
+                    await carouselController.animateToPage(position);
+                    sliderIndex = position;
+                    setState(() {});
+                  },
+                  decorator: DotsDecorator(
+                    size: const Size.square(9.0),
+                    activeSize: const Size(18.0, 9.0),
+                    activeShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                  ),
+                )
+              ],
+            ),
           )),
     );
   }
