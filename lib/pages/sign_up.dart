@@ -2,6 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe/pages/home.dart';
 import 'package:recipe/pages/login.dart';
+import 'package:recipe/utils/images.dart';
 
 class SignUp extends StatefulWidget {
   static const String routeName = 'signUp';
@@ -35,7 +36,7 @@ class _SignUpState extends State<SignUp> {
       body: Stack(
         children: [
           Image.asset(
-            "assets/images/recipe.png",
+            ImagesPath.background,
             fit: BoxFit.cover,
             width: double.infinity,
           ),
@@ -102,7 +103,7 @@ class _SignUpState extends State<SignUp> {
                       bool passwordValid = RegExp(
                               r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
                           .hasMatch(value!);
-                      if (value == null || value.isEmpty) {
+                      if (value.isEmpty) {
                         return "password is required";
                       } else if (!passwordValid) {
                         return "password not valid";
@@ -140,7 +141,7 @@ class _SignUpState extends State<SignUp> {
                       backgroundColor: Colors.deepOrange,
                       minimumSize: const Size(20, 50),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                     ),
                     child: const Text(

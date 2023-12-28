@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recipe/pages/home.dart';
 import 'package:recipe/pages/sign_up.dart';
 import 'package:recipe/services/preferences.service.dart';
+import 'package:recipe/utils/images.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = "login";
@@ -33,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Stack(
         children: [
           Image.asset(
-            "assets/images/recipe.png",
+            ImagesPath.background,
             fit: BoxFit.cover,
             width: double.infinity,
           ),
@@ -59,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       bool emailValid = RegExp(
                               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(value!);
-                      if (value == null || value.isEmpty) {
+                      if (value.isEmpty) {
                         return "email is required";
                       } else if (!emailValid) {
                         return "Please enter valid email";
@@ -83,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       bool passwordValid = RegExp(
                               r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
                           .hasMatch(value!);
-                      if (value == null || value.isEmpty) {
+                      if (value.isEmpty) {
                         return "password is required";
                       } else if (!passwordValid) {
                         return "password not valid";
@@ -120,12 +121,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         await PreferencesService.prefs
                             ?.setString("email", email.text);
                       }
+                      setState(() {});
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.deepOrange,
                       minimumSize: const Size(20, 50),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                     ),
                     child: const Text(
