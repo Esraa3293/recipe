@@ -3,10 +3,13 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe/utils/images.dart';
 
+import '../services/preferences.service.dart';
+import 'login.dart';
+
 class HomeScreen extends StatefulWidget {
   static const String routeName = "home";
 
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -26,44 +29,45 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // String? email = PreferencesService.prefs?.getString("email") ?? "";
+    String? email = PreferencesService.prefs?.getString("email") ?? "";
     return SafeArea(
       child: Scaffold(
-          // appBar: AppBar(
-          //   backgroundColor: const Color(0xFF868365),
-          //   title: Text("Welcome $email"),
-          //   actions: [
-          //     IconButton(
-          //       onPressed: () {
-          //         Navigator.pushReplacementNamed(context, LoginScreen.routeName);
-          //         PreferencesService.prefs?.remove("loggedIn");
-          //       },
-          //       icon: const Icon(Icons.logout),
-          //     )
-          //   ],
-          // ),
+          appBar: AppBar(
+            backgroundColor: const Color(0xFF868365),
+            title: Text("Welcome $email"),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(
+                      context, LoginScreen.routeName);
+                  PreferencesService.prefs?.remove("loggedIn");
+                },
+                icon: const Icon(Icons.logout),
+              )
+            ],
+          ),
           body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                CarouselSlider(
-                  carouselController: carouselController,
-                  options: CarouselOptions(
-                    height: 200.0,
-                    autoPlay: true,
-                    viewportFraction: .75,
-                    enlargeStrategy: CenterPageEnlargeStrategy.height,
-                    enlargeCenterPage: true,
-                    enlargeFactor: .3,
-                    onPageChanged: (index, _) {
-                      sliderIndex = index;
-                      setState(() {});
-                    },
-                  ),
-                  items: meals.map((i) {
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CarouselSlider(
+                      carouselController: carouselController,
+                      options: CarouselOptions(
+                        height: 200.0,
+                        autoPlay: true,
+                        viewportFraction: .75,
+                        enlargeStrategy: CenterPageEnlargeStrategy.height,
+                        enlargeCenterPage: true,
+                        enlargeFactor: .3,
+                        onPageChanged: (index, _) {
+                          sliderIndex = index;
+                          setState(() {});
+                        },
+                      ),
+                      items: meals.map((i) {
                     return Builder(
                       builder: (BuildContext context) {
                         return Container(

@@ -120,8 +120,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             ?.setBool("loggedIn", true);
                         await PreferencesService.prefs
                             ?.setString("email", email.text);
+                        setState(() {});
                       }
-                      setState(() {});
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.deepOrange,

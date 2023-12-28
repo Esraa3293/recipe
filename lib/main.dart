@@ -28,20 +28,21 @@ class MyApplication extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
           inputDecorationTheme: InputDecorationTheme(
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: Colors.grey)),
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: Colors.grey)),
-      )),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: const BorderSide(color: Colors.grey)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: const BorderSide(color: Colors.grey)),
+          )),
       debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.routeName,
       routes: {
         LoginScreen.routeName: (context) => const LoginScreen(),
         SignUp.routeName: (context) => const SignUp(),
-        HomeScreen.routeName: (context) => HomeScreen(),
+        HomeScreen.routeName: (context) => const HomeScreen(),
         IntroPage.routeName: (context) => const IntroPage(),
         SplashScreen.routeName: (context) => const SplashScreen(),
       },

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:recipe/pages/home.dart';
-import 'package:recipe/pages/login.dart';
+import 'package:recipe/pages/intro_page.dart';
 import 'package:recipe/services/preferences.service.dart';
 import 'package:recipe/utils/images.dart';
 
@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
             context,
             PreferencesService.checkLoggedIn()
                 ? HomeScreen.routeName
-                : LoginScreen.routeName);
+                : IntroPage.routeName);
       },
     );
   }
@@ -45,10 +45,8 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(ImagesPath.baseHeader),
-            )
+            Image.asset(ImagesPath.baseHeader),
+            const CircularProgressIndicator()
           ],
         ),
       ),
