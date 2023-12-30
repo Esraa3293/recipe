@@ -41,8 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.black,
             ),
             actions: [
-              Padding(
-                padding: EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(16.0),
                 child: Badge(
                     alignment: Alignment.topRight,
                     child: Icon(
@@ -56,7 +56,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       context, LoginScreen.routeName);
                   PreferencesService.prefs?.remove("loggedIn");
                 },
-                icon: const Icon(Icons.logout),
+                icon: const Icon(
+                  Icons.logout,
+                  color: Colors.black,
+                ),
               )
             ],
           ),
@@ -65,11 +68,20 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text("Bonjour, Emma"),
+                const Text(
+                  "Bonjour, Emma",
+                  style: TextStyle(fontSize: 20, color: Colors.black45),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
-                const Text("What would you like to cook today?"),
+                const Text(
+                  "What would you like to cook today?",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 26,
+                  ),
+                ),
                 const SizedBox(
                   height: 10,
                 ),
