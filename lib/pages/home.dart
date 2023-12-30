@@ -51,10 +51,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     )),
               ),
               IconButton(
-                onPressed: () {
+                onPressed: () async {
                   Navigator.pushReplacementNamed(
                       context, LoginScreen.routeName);
-                  PreferencesService.prefs?.remove("loggedIn");
+                  await PreferencesService.prefs?.remove("loggedIn");
+                  setState(() {});
                 },
                 icon: const Icon(
                   Icons.logout,
@@ -70,7 +71,10 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 const Text(
                   "Bonjour, Emma",
-                  style: TextStyle(fontSize: 20, color: Colors.black45),
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black45,
+                  ),
                 ),
                 const SizedBox(
                   height: 20,

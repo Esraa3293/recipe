@@ -32,6 +32,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
@@ -101,7 +102,7 @@ class _SignUpState extends State<SignUp> {
                   TextFormField(
                     validator: (value) {
                       bool passwordValid = RegExp(
-                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
                           .hasMatch(value!);
                       if (value.isEmpty) {
                         return "password is required";
@@ -152,31 +153,32 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      const Text(
-                        "Already registered?",
-                        style: TextStyle(color: Colors.grey, fontSize: 16),
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, LoginScreen.routeName);
-                          },
-                          child: const Text(
-                            "Sign In",
-                            style: TextStyle(color: Colors.deepOrange),
-                          )),
-                    ],
-                  )
                 ],
               ),
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: Container(
+        color: Colors.transparent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "Already registered?",
+              style: TextStyle(color: Colors.grey, fontSize: 16),
+            ),
+            TextButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(
+                      context, LoginScreen.routeName);
+                },
+                child: const Text(
+                  "Sign In",
+                  style: TextStyle(color: Colors.deepOrange),
+                )),
+          ],
+        ),
       ),
     );
   }

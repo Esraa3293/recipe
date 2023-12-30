@@ -30,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
@@ -58,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextFormField(
                     validator: (value) {
                       bool emailValid = RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(value!);
                       if (value.isEmpty) {
                         return "email is required";
@@ -82,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextFormField(
                     validator: (value) {
                       bool passwordValid = RegExp(
-                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
                           .hasMatch(value!);
                       if (value.isEmpty) {
                         return "password is required";
@@ -138,31 +139,31 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      const Text(
-                        "Don't have an account?",
-                        style: TextStyle(color: Colors.grey, fontSize: 16),
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, SignUp.routeName);
-                          },
-                          child: const Text(
-                            "Register",
-                            style: TextStyle(color: Colors.deepOrange),
-                          )),
-                    ],
-                  )
                 ],
               ),
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: Container(
+        color: Colors.transparent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "Don't have an account?",
+              style: TextStyle(color: Colors.grey, fontSize: 16),
+            ),
+            TextButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, SignUp.routeName);
+                },
+                child: const Text(
+                  "Register",
+                  style: TextStyle(color: Colors.deepOrange),
+                )),
+          ],
+        ),
       ),
     );
   }
