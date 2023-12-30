@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:recipe/pages/login.dart';
 import 'package:recipe/utils/images.dart';
 
 import '../services/preferences.service.dart';
@@ -39,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Icons.sort,
               color: Colors.black,
             ),
-            actions: const [
+            actions: [
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Badge(
@@ -48,15 +49,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       Icons.notifications_none,
                       color: Colors.black,
                     )),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(
+                      context, LoginScreen.routeName);
+                  PreferencesService.prefs?.remove("loggedIn");
+                },
+                icon: const Icon(Icons.logout),
               )
-              // IconButton(
-              //   onPressed: () {
-              //     Navigator.pushReplacementNamed(
-              //         context, LoginScreen.routeName);
-              //     PreferencesService.prefs?.remove("loggedIn");
-              //   },
-              //   icon: const Icon(Icons.logout),
-              // )
             ],
           ),
           body: Padding(
@@ -110,26 +111,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                          onPressed: () async {
-                            await carouselController.previousPage();
-                            // sliderIndex--;
-                            // if (sliderIndex == -1) {
-                            //   sliderIndex = meals.length - 1;
-                            //   // sliderIndex = meals.indexOf(meals.last);
-                            // }
-                            // setState(() {});
+                          onPressed: () {
+                            sliderIndex--;
+                            if (sliderIndex == -1) {
+                              sliderIndex = meals.length - 1;
+                              // sliderIndex = meals.indexOf(meals.last);
+                            }
+                            setState(() {});
                           },
                           icon: const Icon(Icons.arrow_back_ios),
                         ),
                         IconButton(
-                          onPressed: () async {
-                            await carouselController.nextPage();
-                            // sliderIndex++;
-                            // if (sliderIndex == meals.length) {
-                            //   sliderIndex = 0;
-                            //   // sliderIndex = meals.indexOf(meals.first);
-                            // }
-                            // setState(() {});
+                          onPressed: () {
+                            sliderIndex++;
+                            if (sliderIndex == meals.length) {
+                              sliderIndex = 0;
+                              // sliderIndex = meals.indexOf(meals.first);
+                            }
+                            setState(() {});
                           },
                           icon: const Icon(Icons.arrow_forward_ios),
                         ),
