@@ -29,6 +29,30 @@ class _HomeScreenState extends State<HomeScreen> {
   CarouselController carouselController = CarouselController();
 
   List<Ad> adsList = [];
+  List<RecipeWidget> recipes = [
+    RecipeWidget(
+        imagePath: ImagesPath.meal3,
+        title: "French Toast with Berries",
+        numOfCalories: 120,
+        prepTime: 10,
+        color1: ColorsConst.mainColor,
+        color2: ColorsConst.mainColor,
+        icon: const Icon(
+          Icons.favorite_border,
+          color: ColorsConst.grayColor,
+        )),
+    RecipeWidget(
+        imagePath: ImagesPath.meal2,
+        title: "Brown Sugar Cinnamon Toast",
+        numOfCalories: 135,
+        prepTime: 15,
+        icon: const Icon(
+          Icons.favorite,
+          color: ColorsConst.mainColor,
+        ),
+        color1: ColorsConst.mainColor,
+        color2: ColorsConst.grayColor),
+  ];
 
   void getAds() async {
     var adsData = await rootBundle.loadString("assets/data/sample.json");
@@ -252,34 +276,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(
                         height: 18,
                       ),
-                      Row(
-                        children: [
-                          RecipeWidget(
-                              imagePath: ImagesPath.meal3,
-                              title: "French Toast with Berries",
-                              numOfCalories: 120,
-                              prepTime: 10,
-                              color1: ColorsConst.mainColor,
-                              color2: ColorsConst.mainColor,
-                              icon: const Icon(
-                                Icons.favorite_border,
-                                color: ColorsConst.grayColor,
-                              )),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          RecipeWidget(
-                              imagePath: ImagesPath.meal2,
-                              title: "Brown Sugar Cinnamon Toast",
-                              numOfCalories: 135,
-                              prepTime: 15,
-                              icon: const Icon(
-                                Icons.favorite,
-                                color: ColorsConst.mainColor,
-                              ),
-                              color1: ColorsConst.mainColor,
-                              color2: ColorsConst.grayColor),
-                        ],
+                      SizedBox(
+                        height: 230,
+                        child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) => recipes[index],
+                            separatorBuilder: (context, index) =>
+                                const VerticalDivider(
+                                  color: Colors.transparent,
+                                ),
+                            itemCount: recipes.length),
                       ),
                       const SizedBox(
                         height: 25,

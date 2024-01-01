@@ -39,10 +39,14 @@ class RecipeWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(
-                    width: 160,
-                    height: 86,
-                    child: Image.asset(imagePath),
+                  Transform.translate(
+                    offset: const Offset(40, 0),
+                    child: Image.asset(
+                      imagePath,
+                      fit: BoxFit.cover,
+                      width: 160,
+                      height: 86,
+                    ),
                   ),
                   const Text(
                     "Breakfast",
