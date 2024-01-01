@@ -5,6 +5,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:recipe/models/ad.model.dart';
+import 'package:recipe/models/recipe.model.dart';
 import 'package:recipe/pages/login.dart';
 import 'package:recipe/utils/colors.dart';
 import 'package:recipe/utils/images.dart';
@@ -31,27 +32,31 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Ad> adsList = [];
   List<RecipeWidget> recipes = [
     RecipeWidget(
-        imagePath: ImagesPath.meal3,
-        title: "French Toast with Berries",
-        numOfCalories: 120,
-        prepTime: 10,
-        color1: ColorsConst.mainColor,
-        color2: ColorsConst.mainColor,
-        icon: const Icon(
-          Icons.favorite_border,
-          color: ColorsConst.grayColor,
-        )),
+      recipe: Recipe(
+          imagePath: ImagesPath.meal3,
+          title: "French Toast with Berries",
+          numOfCalories: 120,
+          prepTime: 10,
+          color1: ColorsConst.mainColor,
+          color2: ColorsConst.mainColor,
+          icon: const Icon(
+            Icons.favorite_border,
+            color: ColorsConst.grayColor,
+          )),
+    ),
     RecipeWidget(
-        imagePath: ImagesPath.meal2,
-        title: "Brown Sugar Cinnamon Toast",
-        numOfCalories: 135,
-        prepTime: 15,
-        icon: const Icon(
-          Icons.favorite,
-          color: ColorsConst.mainColor,
-        ),
-        color1: ColorsConst.mainColor,
-        color2: ColorsConst.grayColor),
+      recipe: Recipe(
+          imagePath: ImagesPath.meal2,
+          title: "Brown Sugar Cinnamon Toast",
+          numOfCalories: 135,
+          prepTime: 15,
+          icon: const Icon(
+            Icons.favorite,
+            color: ColorsConst.mainColor,
+          ),
+          color1: ColorsConst.mainColor,
+          color2: ColorsConst.grayColor),
+    )
   ];
 
   void getAds() async {
@@ -295,35 +300,41 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 10,
                       ),
                       RecommendedWidget(
-                          imagePath: ImagesPath.meal1,
-                          title: "Blueberry Muffins",
-                          mealType: "Breakfast",
-                          numOfCalories: 120,
-                          prepTime: 10,
-                          color1: ColorsConst.mainColor,
-                          color2: ColorsConst.grayColor),
+                        recipe: Recipe(
+                            imagePath: ImagesPath.meal1,
+                            title: "Blueberry Muffins",
+                            mealType: "Breakfast",
+                            numOfCalories: 120,
+                            prepTime: 10,
+                            color1: ColorsConst.mainColor,
+                            color2: ColorsConst.grayColor),
+                      ),
                       const SizedBox(
                         height: 10,
                       ),
                       RecommendedWidget(
-                          imagePath: ImagesPath.meal5,
-                          title: "Glazed Salmon",
-                          mealType: "Main Dish",
-                          numOfCalories: 280,
-                          prepTime: 45,
-                          color1: ColorsConst.mainColor,
-                          color2: ColorsConst.mainColor),
+                        recipe: Recipe(
+                            imagePath: ImagesPath.meal5,
+                            title: "Glazed Salmon",
+                            mealType: "Main Dish",
+                            numOfCalories: 280,
+                            prepTime: 45,
+                            color1: ColorsConst.mainColor,
+                            color2: ColorsConst.mainColor),
+                      ),
                       const SizedBox(
                         height: 10,
                       ),
                       RecommendedWidget(
-                          imagePath: ImagesPath.meal4,
-                          title: "Asian Glazed Chicken Thighs",
-                          mealType: "Main Dish",
-                          numOfCalories: 280,
-                          prepTime: 45,
-                          color1: ColorsConst.mainColor,
-                          color2: ColorsConst.mainColor),
+                        recipe: Recipe(
+                            imagePath: ImagesPath.meal4,
+                            title: "Asian Glazed Chicken Thighs",
+                            mealType: "Main Dish",
+                            numOfCalories: 280,
+                            prepTime: 45,
+                            color1: ColorsConst.mainColor,
+                            color2: ColorsConst.mainColor),
+                      ),
                     ],
                   ),
                 )),

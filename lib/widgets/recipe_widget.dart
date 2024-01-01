@@ -1,25 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:recipe/models/recipe.model.dart';
 import 'package:recipe/utils/colors.dart';
 import 'package:recipe/utils/numbers.dart';
 
 class RecipeWidget extends StatelessWidget {
-  final Color? color1;
-  final Color? color2;
-  final String imagePath;
-  final String title;
-  final int numOfCalories;
-  final int prepTime;
-  final Icon icon;
+  Recipe? recipe = const Recipe();
 
-  const RecipeWidget(
-      {required this.imagePath,
-      required this.title,
-      required this.numOfCalories,
-      required this.prepTime,
-      required this.icon,
-      required this.color1,
-      required this.color2,
-      super.key});
+  RecipeWidget({this.recipe, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +29,7 @@ class RecipeWidget extends StatelessWidget {
                   Transform.translate(
                     offset: const Offset(40, 0),
                     child: Image.asset(
-                      imagePath,
+                      recipe?.imagePath ?? "",
                       fit: BoxFit.cover,
                       width: 160,
                       height: 86,
@@ -60,7 +47,7 @@ class RecipeWidget extends StatelessWidget {
                     height: 3,
                   ),
                   Text(
-                    title,
+                    recipe?.title ?? "",
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -73,27 +60,27 @@ class RecipeWidget extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.star,
-                        color: color1,
+                        color: recipe?.color1,
                         size: 15,
                       ),
                       Icon(
                         Icons.star,
-                        color: color1,
+                        color: recipe?.color1,
                         size: 15,
                       ),
                       Icon(
                         Icons.star,
-                        color: color1,
+                        color: recipe?.color1,
                         size: 15,
                       ),
                       Icon(
                         Icons.star,
-                        color: color1,
+                        color: recipe?.color1,
                         size: 15,
                       ),
                       Icon(
                         Icons.star,
-                        color: color2,
+                        color: recipe?.color2,
                         size: 15,
                       )
                     ],
@@ -101,9 +88,9 @@ class RecipeWidget extends StatelessWidget {
                   const SizedBox(
                     height: 7,
                   ),
-                  const Text(
-                    "120 Calories",
-                    style: TextStyle(
+                  Text(
+                    "${recipe?.numOfCalories ?? ""} Calories",
+                    style: const TextStyle(
                         fontSize: 8,
                         fontWeight: FontWeight.normal,
                         color: ColorsConst.mainColor),
@@ -122,7 +109,7 @@ class RecipeWidget extends StatelessWidget {
                         width: 5,
                       ),
                       Text(
-                        "$prepTime mins",
+                        "${recipe?.prepTime ?? ""} mins",
                         style: const TextStyle(
                           fontSize: 8,
                           fontWeight: FontWeight.normal,
@@ -152,7 +139,7 @@ class RecipeWidget extends StatelessWidget {
               ),
             ),
           ),
-          Padding(padding: const EdgeInsets.all(4.0), child: icon),
+          Padding(padding: const EdgeInsets.all(4.0), child: recipe?.icon),
         ],
       ),
     );

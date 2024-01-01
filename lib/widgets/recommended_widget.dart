@@ -1,25 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:recipe/models/recipe.model.dart';
 import 'package:recipe/utils/colors.dart';
 import 'package:recipe/utils/numbers.dart';
 
 class RecommendedWidget extends StatelessWidget {
-  final Color? color1;
-  final Color? color2;
-  final String imagePath;
-  final String title;
-  final String mealType;
-  final int numOfCalories;
-  final int prepTime;
+  Recipe? recipe = const Recipe();
 
-  const RecommendedWidget(
-      {required this.imagePath,
-      required this.title,
-      required this.mealType,
-      required this.numOfCalories,
-      required this.prepTime,
-      required this.color1,
-      required this.color2,
-      super.key});
+  RecommendedWidget({this.recipe, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +27,7 @@ class RecommendedWidget extends StatelessWidget {
                 SizedBox(
                   width: 75,
                   height: 45,
-                  child: Image.asset(imagePath),
+                  child: Image.asset(recipe?.imagePath ?? ""),
                 ),
                 const SizedBox(
                   width: 5,
@@ -51,7 +38,7 @@ class RecommendedWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        mealType,
+                        recipe?.mealType ?? "",
                         style: const TextStyle(
                           color: ColorsConst.titleColor,
                           fontSize: 8,
@@ -62,7 +49,7 @@ class RecommendedWidget extends StatelessWidget {
                         height: 3,
                       ),
                       Text(
-                        title,
+                        recipe?.title ?? "",
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -75,34 +62,34 @@ class RecommendedWidget extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.star,
-                            color: color1,
+                            color: recipe?.color1,
                             size: 15,
                           ),
                           Icon(
                             Icons.star,
-                            color: color1,
+                            color: recipe?.color1,
                             size: 15,
                           ),
                           Icon(
                             Icons.star,
-                            color: color1,
+                            color: recipe?.color1,
                             size: 15,
                           ),
                           Icon(
                             Icons.star,
-                            color: color2,
+                            color: recipe?.color2,
                             size: 15,
                           ),
                           Icon(
                             Icons.star,
-                            color: color2,
+                            color: recipe?.color2,
                             size: 15,
                           ),
                           const SizedBox(
                             width: 8,
                           ),
                           Text(
-                            "$numOfCalories Calories",
+                            "${recipe?.numOfCalories ?? ""} Calories",
                             style: const TextStyle(
                                 fontSize: 8,
                                 fontWeight: FontWeight.normal,
@@ -124,7 +111,7 @@ class RecommendedWidget extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            "$prepTime mins",
+                            "${recipe?.prepTime ?? ""} mins",
                             style: const TextStyle(
                               fontSize: 8,
                               fontWeight: FontWeight.normal,
