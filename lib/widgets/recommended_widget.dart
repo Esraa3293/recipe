@@ -116,7 +116,7 @@ class RecommendedWidget extends StatelessWidget {
                       Row(
                         children: [
                           const Icon(
-                            Icons.timer_outlined,
+                            Icons.access_time,
                             size: 20,
                             color: ColorsConst.grayColor,
                           ),

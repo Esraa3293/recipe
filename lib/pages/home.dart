@@ -282,7 +282,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       const SizedBox(
-                        height: 33,
+                        height: 25,
                       ),
                       const SectionHeader(sectionName: "Recommended"),
                       const SizedBox(
