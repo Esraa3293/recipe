@@ -5,6 +5,7 @@ import 'package:recipe/pages/login.dart';
 import 'package:recipe/pages/sign_up.dart';
 import 'package:recipe/pages/splash_screen.dart';
 import 'package:recipe/services/preferences.service.dart';
+import 'package:recipe/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -28,7 +29,7 @@ class MyApplication extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+          colorScheme: ColorScheme.fromSeed(seedColor: ColorsConst.mainColor),
           inputDecorationTheme: InputDecorationTheme(
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),

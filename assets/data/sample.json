@@ -1,0 +1,43 @@
+{
+  "ads": [
+    {
+      "title": "New Meals",
+      "image": "https://www.southernliving.com/thmb/HSEUOjJVCl4kIRJRMAZ1eblQlWE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Millionaire_Spaghetti_019-34e9c04b1ae8405088f53450a048e413.jpg"
+    },
+    {
+      "title": "Healthy Meals",
+      "image": "https://www.thespruceeats.com/thmb/5f1AUqYbY4CsjHSeqvDUau7OjaQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/basic-congee-recipes-4065244-hero-01-5cf81547c34d4520be10bb57c6cda902.jpg"
+    },
+    {
+      "title": "Less Carbs Meals",
+      "image": "https://foodhub.scene7.com/is/image/woolworthsltdprod/2009-cobb-salad:Mobile-1300x1150"
+    },
+    {
+      "title": "Pasta Meals",
+      "image": "https://thecozycook.com/wp-content/uploads/2022/04/Lasagna-Recipe-f.jpg"
+    },
+    {
+      "title": "Chicken Meals",
+      "image": "https://ohsweetbasil.com/wp-content/uploads/easy-teriyaki-chicken-recipe-2-scaled.jpg"
+    }
+  ],
+  "recipes": [
+    {
+      "image": "",
+      "meal_type": "Breakfast",
+      "title": "French Toast with Berries",
+      "rating": 5,
+      "calories": "120 Calories",
+      "prep_time": "10 mins",
+      "serving": 1
+    },
+    {
+      "meal_type": "Breakfast",
+      "title": "Brown Sugar Cinnamon Toast",
+      "rating": 4,
+      "calories": "135 Calories",
+      "prep_time": "15 mins",
+      "serving": 1
+    }
+  ]
+}
