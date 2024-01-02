@@ -58,6 +58,38 @@ class _HomeScreenState extends State<HomeScreen> {
           color2: ColorsConst.grayColor),
     )
   ];
+  List<RecommendedWidget> recommendedRecipes = [
+    RecommendedWidget(
+      recipe: Recipe(
+          imagePath: ImagesPath.meal1,
+          title: "Blueberry Muffins",
+          mealType: "Breakfast",
+          numOfCalories: 120,
+          prepTime: 10,
+          color1: ColorsConst.mainColor,
+          color2: ColorsConst.grayColor),
+    ),
+    RecommendedWidget(
+      recipe: Recipe(
+          imagePath: ImagesPath.meal5,
+          title: "Glazed Salmon",
+          mealType: "Main Dish",
+          numOfCalories: 280,
+          prepTime: 45,
+          color1: ColorsConst.mainColor,
+          color2: ColorsConst.mainColor),
+    ),
+    RecommendedWidget(
+      recipe: Recipe(
+          imagePath: ImagesPath.meal4,
+          title: "Asian Glazed Chicken Thighs",
+          mealType: "Main Dish",
+          numOfCalories: 280,
+          prepTime: 45,
+          color1: ColorsConst.mainColor,
+          color2: ColorsConst.mainColor),
+    ),
+  ];
 
   void getAds() async {
     var adsData = await rootBundle.loadString("assets/data/sample.json");
@@ -299,42 +331,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      RecommendedWidget(
-                        recipe: Recipe(
-                            imagePath: ImagesPath.meal1,
-                            title: "Blueberry Muffins",
-                            mealType: "Breakfast",
-                            numOfCalories: 120,
-                            prepTime: 10,
-                            color1: ColorsConst.mainColor,
-                            color2: ColorsConst.grayColor),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      RecommendedWidget(
-                        recipe: Recipe(
-                            imagePath: ImagesPath.meal5,
-                            title: "Glazed Salmon",
-                            mealType: "Main Dish",
-                            numOfCalories: 280,
-                            prepTime: 45,
-                            color1: ColorsConst.mainColor,
-                            color2: ColorsConst.mainColor),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      RecommendedWidget(
-                        recipe: Recipe(
-                            imagePath: ImagesPath.meal4,
-                            title: "Asian Glazed Chicken Thighs",
-                            mealType: "Main Dish",
-                            numOfCalories: 280,
-                            prepTime: 45,
-                            color1: ColorsConst.mainColor,
-                            color2: ColorsConst.mainColor),
-                      ),
+                      SizedBox(
+                        height: 500,
+                        child: ListView.separated(
+                            itemBuilder: (context, index) =>
+                                recommendedRecipes[index],
+                            separatorBuilder: (context, index) =>
+                                const Divider(),
+                            itemCount: recommendedRecipes.length),
+                      )
                     ],
                   ),
                 )),
