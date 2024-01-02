@@ -332,12 +332,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 10,
                       ),
                       SizedBox(
-                        height: 500,
+                        height: 350,
                         child: ListView.separated(
                             itemBuilder: (context, index) =>
                                 recommendedRecipes[index],
-                            separatorBuilder: (context, index) =>
-                                const Divider(),
+                            separatorBuilder: (context, index) => const Divider(
+                                  color: Colors.transparent,
+                                ),
                             itemCount: recommendedRecipes.length),
                       )
                     ],
