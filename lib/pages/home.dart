@@ -37,8 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
           title: "French Toast with Berries",
           numOfCalories: 120,
           prepTime: 10,
-          color1: ColorsConst.mainColor,
-          color2: ColorsConst.mainColor,
           icon: const Icon(
             Icons.favorite_border,
             color: ColorsConst.grayColor,
@@ -46,48 +44,44 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
     RecipeWidget(
       recipe: Recipe(
-          imagePath: ImagesPath.meal2,
-          title: "Brown Sugar Cinnamon Toast",
-          numOfCalories: 135,
-          prepTime: 15,
-          icon: const Icon(
-            Icons.favorite,
-            color: ColorsConst.mainColor,
-          ),
-          color1: ColorsConst.mainColor,
-          color2: ColorsConst.grayColor),
+        imagePath: ImagesPath.meal2,
+        title: "Brown Sugar Cinnamon Toast",
+        numOfCalories: 135,
+        prepTime: 15,
+        icon: const Icon(
+          Icons.favorite,
+          color: ColorsConst.mainColor,
+        ),
+      ),
     )
   ];
   List<RecommendedWidget> recommendedRecipes = [
     RecommendedWidget(
       recipe: Recipe(
-          imagePath: ImagesPath.meal1,
-          title: "Blueberry Muffins",
-          mealType: "Breakfast",
-          numOfCalories: 120,
-          prepTime: 10,
-          color1: ColorsConst.mainColor,
-          color2: ColorsConst.grayColor),
+        imagePath: ImagesPath.meal1,
+        title: "Blueberry Muffins",
+        mealType: "Breakfast",
+        numOfCalories: 120,
+        prepTime: 10,
+      ),
     ),
     RecommendedWidget(
       recipe: Recipe(
-          imagePath: ImagesPath.meal5,
-          title: "Glazed Salmon",
-          mealType: "Main Dish",
-          numOfCalories: 280,
-          prepTime: 45,
-          color1: ColorsConst.mainColor,
-          color2: ColorsConst.mainColor),
+        imagePath: ImagesPath.meal5,
+        title: "Glazed Salmon",
+        mealType: "Main Dish",
+        numOfCalories: 280,
+        prepTime: 45,
+      ),
     ),
     RecommendedWidget(
       recipe: Recipe(
-          imagePath: ImagesPath.meal4,
-          title: "Asian Glazed Chicken Thighs",
-          mealType: "Main Dish",
-          numOfCalories: 280,
-          prepTime: 45,
-          color1: ColorsConst.mainColor,
-          color2: ColorsConst.mainColor),
+        imagePath: ImagesPath.meal4,
+        title: "Asian Glazed Chicken Thighs",
+        mealType: "Main Dish",
+        numOfCalories: 280,
+        prepTime: 45,
+      ),
     ),
   ];
 

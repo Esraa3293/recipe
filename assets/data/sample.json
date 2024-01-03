@@ -23,7 +23,7 @@
   ],
   "recipes": [
     {
-      "image": "",
+      "image": "https://d3gg7p8kl1yfy0.cloudfront.net/detail_bb_French_Toast_wBerries_2-0004_2022.jpg",
       "meal_type": "Breakfast",
       "title": "French Toast with Berries",
       "rating": 5,
@@ -32,6 +32,7 @@
       "serving": 1
     },
     {
+      "image": "https://d3gg7p8kl1yfy0.cloudfront.net/Recipe-Detail-CinFrenchToastBake-0019_2022.jpg",
       "meal_type": "Breakfast",
       "title": "Brown Sugar Cinnamon Toast",
       "rating": 4,

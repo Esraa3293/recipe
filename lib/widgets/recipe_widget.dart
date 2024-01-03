@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:recipe/models/recipe.model.dart';
 import 'package:recipe/utils/colors.dart';
 import 'package:recipe/utils/numbers.dart';
@@ -56,34 +57,22 @@ class RecipeWidget extends StatelessWidget {
                   const SizedBox(
                     height: 6,
                   ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.star,
-                        color: recipe?.color1,
-                        size: 15,
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: recipe?.color1,
-                        size: 15,
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: recipe?.color1,
-                        size: 15,
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: recipe?.color1,
-                        size: 15,
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: recipe?.color2,
-                        size: 15,
-                      )
-                    ],
+                  RatingBar.builder(
+                    initialRating: 4,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    updateOnDrag: true,
+                    unratedColor: ColorsConst.grayColor,
+                    itemCount: 5,
+                    itemSize: 15,
+                    itemBuilder: (context, _) => const Icon(
+                      Icons.star,
+                      color: ColorsConst.mainColor,
+                    ),
+                    onRatingUpdate: (rating) {
+                      print(rating);
+                    },
                   ),
                   const SizedBox(
                     height: 7,
