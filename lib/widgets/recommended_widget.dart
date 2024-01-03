@@ -4,10 +4,22 @@ import 'package:recipe/models/recipe.model.dart';
 import 'package:recipe/utils/colors.dart';
 import 'package:recipe/utils/numbers.dart';
 
-class RecommendedWidget extends StatelessWidget {
+class RecommendedWidget extends StatefulWidget {
   Recipe? recipe = const Recipe();
 
   RecommendedWidget({this.recipe, super.key});
+
+  @override
+  State<RecommendedWidget> createState() => _RecommendedWidgetState();
+}
+
+class _RecommendedWidgetState extends State<RecommendedWidget> {
+  bool favorite = false;
+
+  void toggleFavorite() {
+    favorite = !favorite;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +40,7 @@ class RecommendedWidget extends StatelessWidget {
                 SizedBox(
                   width: 75,
                   height: 45,
-                  child: Image.asset(recipe?.imagePath ?? ""),
+                  child: Image.asset(widget.recipe?.imagePath ?? ""),
                 ),
                 const SizedBox(
                   width: 5,
@@ -39,7 +51,7 @@ class RecommendedWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        recipe?.mealType ?? "",
+                        widget.recipe?.mealType ?? "",
                         style: const TextStyle(
                           color: ColorsConst.titleColor,
                           fontSize: 8,
@@ -50,7 +62,7 @@ class RecommendedWidget extends StatelessWidget {
                         height: 3,
                       ),
                       Text(
-                        recipe?.title ?? "",
+                        widget.recipe?.title ?? "",
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -82,7 +94,7 @@ class RecommendedWidget extends StatelessWidget {
                             width: 8,
                           ),
                           Text(
-                            "${recipe?.numOfCalories ?? ""} Calories",
+                            "${widget.recipe?.numOfCalories ?? ""} Calories",
                             style: const TextStyle(
                                 fontSize: 8,
                                 fontWeight: FontWeight.normal,
@@ -104,7 +116,7 @@ class RecommendedWidget extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            "${recipe?.prepTime ?? ""} mins",
+                            "${widget.recipe?.prepTime ?? ""} mins",
                             style: const TextStyle(
                               fontSize: 8,
                               fontWeight: FontWeight.normal,
@@ -142,11 +154,21 @@ class RecommendedWidget extends StatelessWidget {
               ],
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.favorite_border,
-              color: ColorsConst.grayColor,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () {
+                toggleFavorite();
+              },
+              child: (favorite
+                  ? const Icon(
+                      Icons.favorite_border,
+                      color: ColorsConst.grayColor,
+                    )
+                  : const Icon(
+                      Icons.favorite,
+                      color: ColorsConst.mainColor,
+                    )),
             ),
           )
         ],

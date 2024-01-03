@@ -33,14 +33,11 @@ class _HomeScreenState extends State<HomeScreen> {
   List<RecipeWidget> recipes = [
     RecipeWidget(
       recipe: Recipe(
-          imagePath: ImagesPath.meal3,
-          title: "French Toast with Berries",
-          numOfCalories: 120,
-          prepTime: 10,
-          icon: const Icon(
-            Icons.favorite_border,
-            color: ColorsConst.grayColor,
-          )),
+        imagePath: ImagesPath.meal3,
+        title: "French Toast with Berries",
+        numOfCalories: 120,
+        prepTime: 10,
+      ),
     ),
     RecipeWidget(
       recipe: Recipe(
@@ -48,10 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
         title: "Brown Sugar Cinnamon Toast",
         numOfCalories: 135,
         prepTime: 15,
-        icon: const Icon(
-          Icons.favorite,
-          color: ColorsConst.mainColor,
-        ),
       ),
     )
   ];

@@ -4,10 +4,22 @@ import 'package:recipe/models/recipe.model.dart';
 import 'package:recipe/utils/colors.dart';
 import 'package:recipe/utils/numbers.dart';
 
-class RecipeWidget extends StatelessWidget {
+class RecipeWidget extends StatefulWidget {
   Recipe? recipe = const Recipe();
 
   RecipeWidget({this.recipe, super.key});
+
+  @override
+  State<RecipeWidget> createState() => _RecipeWidgetState();
+}
+
+class _RecipeWidgetState extends State<RecipeWidget> {
+  bool favorite = true;
+
+  void toggleFavorite() {
+    favorite = !favorite;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +42,7 @@ class RecipeWidget extends StatelessWidget {
                   Transform.translate(
                     offset: const Offset(40, 0),
                     child: Image.asset(
-                      recipe?.imagePath ?? "",
+                      widget.recipe?.imagePath ?? "",
                       fit: BoxFit.cover,
                       width: 160,
                       height: 86,
@@ -48,7 +60,7 @@ class RecipeWidget extends StatelessWidget {
                     height: 3,
                   ),
                   Text(
-                    recipe?.title ?? "",
+                    widget.recipe?.title ?? "",
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -78,7 +90,7 @@ class RecipeWidget extends StatelessWidget {
                     height: 7,
                   ),
                   Text(
-                    "${recipe?.numOfCalories ?? ""} Calories",
+                    "${widget.recipe?.numOfCalories ?? ""} Calories",
                     style: const TextStyle(
                         fontSize: 8,
                         fontWeight: FontWeight.normal,
@@ -98,7 +110,7 @@ class RecipeWidget extends StatelessWidget {
                         width: 5,
                       ),
                       Text(
-                        "${recipe?.prepTime ?? ""} mins",
+                        "${widget.recipe?.prepTime ?? ""} mins",
                         style: const TextStyle(
                           fontSize: 8,
                           fontWeight: FontWeight.normal,
@@ -128,7 +140,22 @@ class RecipeWidget extends StatelessWidget {
               ),
             ),
           ),
-          Padding(padding: const EdgeInsets.all(4.0), child: recipe?.icon),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: InkWell(
+                onTap: () {
+                  toggleFavorite();
+                },
+                child: (favorite
+                    ? const Icon(
+                        Icons.favorite_border,
+                        color: ColorsConst.grayColor,
+                      )
+                    : const Icon(
+                        Icons.favorite,
+                        color: ColorsConst.mainColor,
+                      ))),
+          ),
         ],
       ),
     );
