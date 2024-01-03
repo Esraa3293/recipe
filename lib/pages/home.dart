@@ -202,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       const SizedBox(
-                        height: 25,
+                        height: 20,
                       ),
                       Stack(
                         alignment: Alignment.center,
@@ -318,16 +318,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      SizedBox(
-                        height: 350,
-                        child: ListView.separated(
-                            itemBuilder: (context, index) =>
-                                recommendedRecipes[index],
-                            separatorBuilder: (context, index) => const Divider(
-                                  color: Colors.transparent,
-                                ),
-                            itemCount: recommendedRecipes.length),
-                      )
+                      ListView.separated(
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.only(bottom: 10),
+                          itemBuilder: (context, index) =>
+                              recommendedRecipes[index],
+                          separatorBuilder: (context, index) => const Divider(
+                                color: Colors.transparent,
+                              ),
+                          itemCount: recommendedRecipes.length)
                     ],
                   ),
                 )),
