@@ -5,7 +5,7 @@ import 'package:recipe/utils/colors.dart';
 import 'package:recipe/utils/numbers.dart';
 
 class RecipeWidget extends StatefulWidget {
-  Recipe? recipe = const Recipe();
+  Recipe? recipe = Recipe();
 
   RecipeWidget({this.recipe, super.key});
 
