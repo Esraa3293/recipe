@@ -175,6 +175,35 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(
                         height: 10,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: Numbers.appHorizontalPadding),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              prefixIcon: const Icon(
+                                Icons.search,
+                                color: ColorsConst.grayColor,
+                              ),
+                              hintText: "Search for recipes",
+                              hintStyle: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                  color: ColorsConst.grayColor),
+                              filled: true,
+                              fillColor: ColorsConst.containerBgColor,
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(10)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(10))),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
                       Stack(
                         alignment: Alignment.center,
                         children: [
@@ -265,35 +294,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(
                         height: 15,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: Numbers.appHorizontalPadding),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              prefixIcon: const Icon(
-                                Icons.search,
-                                color: ColorsConst.grayColor,
-                              ),
-                              hintText: "Search for recipes",
-                              hintStyle: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.normal,
-                                  color: ColorsConst.grayColor),
-                              filled: true,
-                              fillColor: ColorsConst.containerBgColor,
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.transparent),
-                                  borderRadius: BorderRadius.circular(10)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.transparent),
-                                  borderRadius: BorderRadius.circular(10))),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 25,
                       ),
                       const SectionHeader(
                           sectionName: "Today\'s Fresh Recipes"),
