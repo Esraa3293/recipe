@@ -1,8 +1,10 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:recipe/pages/home.dart';
 import 'package:recipe/pages/login.dart';
 import 'package:recipe/utils/images.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
 
@@ -128,8 +130,14 @@ class _SignUpState extends State<SignUp> {
                     height: 30,
                   ),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (formKey.currentState?.validate() ?? false) {
+                        await GetIt.I
+                            .get<SharedPreferences>()
+                            .setBool("loggedIn", true);
+                        await GetIt.I
+                            .get<SharedPreferences>()
+                            .setString("name", name.text);
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
