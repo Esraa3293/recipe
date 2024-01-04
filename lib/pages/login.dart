@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:recipe/pages/home.dart';
@@ -58,13 +59,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextFormField(
                     style: const TextStyle(color: Colors.white),
                     validator: (value) {
-                      bool emailValid = RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(value!);
-                      if (value.isEmpty) {
+                      if (value == null || value.isEmpty) {
                         return "email is required";
-                      } else if (!emailValid) {
-                        return "Please enter valid email";
+                      }
+                      if (!EmailValidator.validate(value)) {
+                        return "email not valid";
                       }
                       return null;
                     },
@@ -82,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: const TextStyle(color: Colors.white),
                     validator: (value) {
                       bool passwordValid = RegExp(
-                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
                           .hasMatch(value!);
                       if (value.isEmpty) {
                         return "password is required";
