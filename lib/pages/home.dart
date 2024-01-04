@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:recipe/models/ad.model.dart';
 import 'package:recipe/models/recipe.model.dart';
 import 'package:recipe/pages/login.dart';
@@ -13,11 +14,9 @@ import 'package:recipe/utils/numbers.dart';
 import 'package:recipe/widgets/recipe_widget.dart';
 import 'package:recipe/widgets/recommended_widget.dart';
 import 'package:recipe/widgets/section_header.dart';
-
-import '../services/preferences.service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const String routeName = "home";
 
   const HomeScreen({super.key});
 
@@ -94,13 +93,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String? email = PreferencesService.prefs?.getString("email") ?? "";
+    String email = GetIt.I.get<SharedPreferences>().getString("email") ?? "";
+    // String? email = PreferencesService.prefs?.getString("email") ?? "";
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            // title: Text("Welcome $email"),
             leading: const Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: Numbers.appHorizontalPadding),
@@ -124,10 +123,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     horizontal: Numbers.appHorizontalPadding),
                 child: IconButton(
                   onPressed: () async {
-                    Navigator.pushReplacementNamed(
-                        context, LoginScreen.routeName);
-                    await PreferencesService.prefs?.remove("loggedIn");
-                    setState(() {});
+                    await GetIt.I.get<SharedPreferences>().remove("loggedIn");
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ));
+
+                    // await PreferencesService.prefs?.remove("loggedIn");
+                    // setState(() {});
                   },
                   icon: const Icon(
                     Icons.logout,
@@ -146,12 +150,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
                             horizontal: Numbers.appHorizontalPadding),
                         child: Text(
-                          "Bonjour, Emma",
-                          style: TextStyle(
+                          "Bonjour, $email",
+                          style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: ColorsConst.grayColor,

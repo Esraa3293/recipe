@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ButtonWidget extends StatelessWidget {
-  String routeName;
+  Route route;
   String text;
 
-  ButtonWidget(this.routeName, this.text, {super.key});
+  ButtonWidget(this.route, this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        Navigator.pushNamed(context, routeName);
+        Navigator.push(context, route);
       },
       style: ElevatedButton.styleFrom(
           backgroundColor: Colors.deepOrange,

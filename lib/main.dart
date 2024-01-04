@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:recipe/pages/home.dart';
-import 'package:recipe/pages/intro_page.dart';
-import 'package:recipe/pages/login.dart';
-import 'package:recipe/pages/sign_up.dart';
+import 'package:get_it/get_it.dart';
 import 'package:recipe/pages/splash_screen.dart';
-import 'package:recipe/services/preferences.service.dart';
 import 'package:recipe/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    PreferencesService.prefs = await SharedPreferences.getInstance();
-    if (PreferencesService.prefs != null) {
-      print("Preferences init successfully");
-    }
+    var preference = await SharedPreferences.getInstance();
+    GetIt.I.registerSingleton<SharedPreferences>(preference);
+
+    // if (PreferencesService.prefs != null) {
+    //   print("Preferences init successfully");
+    // }
   } catch (e) {
     print("Error in Preferences init $e");
   }
@@ -29,8 +27,12 @@ class MyApplication extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+          fontFamily: 'Hellix',
           colorScheme: ColorScheme.fromSeed(seedColor: ColorsConst.mainColor),
           inputDecorationTheme: InputDecorationTheme(
+            labelStyle: const TextStyle(color: Colors.grey),
+            prefixIconColor: Colors.grey,
+            suffixIconColor: Colors.grey,
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
                 borderSide: const BorderSide(color: Colors.grey)),
@@ -39,14 +41,7 @@ class MyApplication extends StatelessWidget {
                 borderSide: const BorderSide(color: Colors.grey)),
           )),
       debugShowCheckedModeBanner: false,
-      initialRoute: SplashScreen.routeName,
-      routes: {
-        LoginScreen.routeName: (context) => const LoginScreen(),
-        SignUp.routeName: (context) => const SignUp(),
-        HomeScreen.routeName: (context) => const HomeScreen(),
-        IntroPage.routeName: (context) => const IntroPage(),
-        SplashScreen.routeName: (context) => const SplashScreen(),
-      },
+      home: const SplashScreen(),
     );
   }
 }

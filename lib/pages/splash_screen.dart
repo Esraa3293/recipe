@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:recipe/pages/home.dart';
 import 'package:recipe/pages/intro_page.dart';
-import 'package:recipe/services/preferences.service.dart';
 import 'package:recipe/utils/images.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
-  static const String routeName = "splash";
 
   const SplashScreen({super.key});
 
@@ -26,11 +26,25 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(
       const Duration(seconds: 3),
       () {
-        Navigator.pushReplacementNamed(
-            context,
-            PreferencesService.checkLoggedIn()
-                ? HomeScreen.routeName
-                : IntroPage.routeName);
+        if (GetIt.I.get<SharedPreferences>().getBool("loggedIn") ?? false) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomeScreen(),
+              ));
+        } else {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const IntroPage(),
+              ));
+        }
+
+        // Navigator.pushReplacementNamed(
+        //     context,
+        //     PreferencesService.checkLoggedIn()
+        //         ? HomeScreen.routeName
+        //         : IntroPage.routeName);
       },
     );
   }

@@ -5,7 +5,6 @@ import 'package:recipe/pages/login.dart';
 import 'package:recipe/utils/images.dart';
 
 class SignUp extends StatefulWidget {
-  static const String routeName = 'signUp';
 
   const SignUp({super.key});
 
@@ -59,6 +58,7 @@ class _SignUpState extends State<SignUp> {
                     height: 20,
                   ),
                   TextFormField(
+                    style: const TextStyle(color: Colors.white),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "full name is required";
@@ -69,15 +69,14 @@ class _SignUpState extends State<SignUp> {
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
                       labelText: "Full Name",
-                      labelStyle: TextStyle(color: Colors.grey),
                       prefixIcon: Icon(Icons.person_outline),
-                      prefixIconColor: Colors.grey,
                     ),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
+                    style: const TextStyle(color: Colors.white),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "email is required";
@@ -91,18 +90,17 @@ class _SignUpState extends State<SignUp> {
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       labelText: "Email",
-                      labelStyle: TextStyle(color: Colors.grey),
                       prefixIcon: Icon(Icons.email_outlined),
-                      prefixIconColor: Colors.grey,
                     ),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
+                    style: const TextStyle(color: Colors.white),
                     validator: (value) {
                       bool passwordValid = RegExp(
-                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
                           .hasMatch(value!);
                       if (value.isEmpty) {
                         return "password is required";
@@ -114,19 +112,17 @@ class _SignUpState extends State<SignUp> {
                     controller: password,
                     obscureText: obscureText,
                     decoration: InputDecoration(
-                        labelText: "Password",
-                        labelStyle: const TextStyle(color: Colors.grey),
-                        prefixIcon: const Icon(Icons.lock_outline),
-                        prefixIconColor: Colors.grey,
-                        suffixIcon: InkWell(
-                            onTap: () {
-                              obscureText = !obscureText;
-                              setState(() {});
-                            },
-                            child: Icon(obscureText
-                                ? Icons.visibility_off
-                                : Icons.visibility)),
-                        suffixIconColor: Colors.grey),
+                      labelText: "Password",
+                      prefixIcon: const Icon(Icons.lock_outline),
+                      suffixIcon: InkWell(
+                          onTap: () {
+                            obscureText = !obscureText;
+                            setState(() {});
+                          },
+                          child: Icon(obscureText
+                              ? Icons.visibility_off
+                              : Icons.visibility)),
+                    ),
                   ),
                   const SizedBox(
                     height: 30,
@@ -134,8 +130,11 @@ class _SignUpState extends State<SignUp> {
                   ElevatedButton(
                     onPressed: () {
                       if (formKey.currentState?.validate() ?? false) {
-                        Navigator.pushReplacementNamed(
-                            context, HomeScreen.routeName);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomeScreen(),
+                            ));
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -170,8 +169,11 @@ class _SignUpState extends State<SignUp> {
             ),
             TextButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(
-                      context, LoginScreen.routeName);
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ));
                 },
                 child: const Text(
                   "Sign In",

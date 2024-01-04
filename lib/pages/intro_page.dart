@@ -5,7 +5,7 @@ import 'package:recipe/utils/images.dart';
 import 'package:recipe/widgets/button_widget.dart';
 
 class IntroPage extends StatelessWidget {
-  static const String routeName = "Intro";
+  // static const String routeName = "Intro";
 
   const IntroPage({super.key});
 
@@ -39,11 +39,19 @@ class IntroPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    ButtonWidget(SignUp.routeName, "Register"),
+                    ButtonWidget(
+                        MaterialPageRoute(
+                          builder: (context) => const SignUp(),
+                        ),
+                        "Register"),
                     const SizedBox(
                       height: 20,
                     ),
-                    ButtonWidget(LoginScreen.routeName, "Sign In")
+                    ButtonWidget(
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                        "Sign In")
                   ],
                 ),
               ),

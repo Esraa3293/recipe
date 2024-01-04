@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:recipe/pages/home.dart';
 import 'package:recipe/pages/sign_up.dart';
-import 'package:recipe/services/preferences.service.dart';
 import 'package:recipe/utils/images.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
-  static const String routeName = "login";
-
   const LoginScreen({super.key});
 
   @override
@@ -57,9 +56,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 20,
                   ),
                   TextFormField(
+                    style: const TextStyle(color: Colors.white),
                     validator: (value) {
                       bool emailValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(value!);
                       if (value.isEmpty) {
                         return "email is required";
@@ -72,18 +72,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       labelText: "Email",
-                      labelStyle: TextStyle(color: Colors.grey),
                       prefixIcon: Icon(Icons.email_outlined),
-                      prefixIconColor: Colors.grey,
                     ),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
+                    style: const TextStyle(color: Colors.white),
                     validator: (value) {
                       bool passwordValid = RegExp(
-                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
                           .hasMatch(value!);
                       if (value.isEmpty) {
                         return "password is required";
@@ -95,19 +94,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: password,
                     obscureText: obscureText,
                     decoration: InputDecoration(
-                        labelText: "Password",
-                        labelStyle: const TextStyle(color: Colors.grey),
-                        prefixIcon: const Icon(Icons.lock_outline),
-                        prefixIconColor: Colors.grey,
-                        suffixIcon: InkWell(
-                            onTap: () {
-                              obscureText = !obscureText;
-                              setState(() {});
-                            },
-                            child: Icon(obscureText
-                                ? Icons.visibility_off
-                                : Icons.visibility)),
-                        suffixIconColor: Colors.grey),
+                      labelText: "Password",
+                      prefixIcon: const Icon(Icons.lock_outline),
+                      suffixIcon: InkWell(
+                          onTap: () {
+                            obscureText = !obscureText;
+                            setState(() {});
+                          },
+                          child: Icon(obscureText
+                              ? Icons.visibility_off
+                              : Icons.visibility)),
+                    ),
                   ),
                   const SizedBox(
                     height: 30,
@@ -115,13 +112,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       if (formKey.currentState?.validate() ?? false) {
-                        Navigator.pushReplacementNamed(
-                            context, HomeScreen.routeName);
-                        await PreferencesService.prefs
-                            ?.setBool("loggedIn", true);
-                        await PreferencesService.prefs
-                            ?.setString("email", email.text);
-                        setState(() {});
+                        await GetIt.I
+                            .get<SharedPreferences>()
+                            .setBool("loggedIn", true);
+                        await GetIt.I
+                            .get<SharedPreferences>()
+                            .setString("email", email.text);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomeScreen(),
+                            ));
+                        // await PreferencesService.prefs
+                        //     ?.setBool("loggedIn", true);
+                        // await PreferencesService.prefs
+                        //     ?.setString("email", email.text);
+                        // setState(() {});
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -156,7 +162,11 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             TextButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, SignUp.routeName);
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SignUp(),
+                      ));
                 },
                 child: const Text(
                   "Register",
