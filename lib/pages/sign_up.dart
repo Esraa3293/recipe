@@ -137,7 +137,7 @@ class _SignUpState extends State<SignUp> {
                             .setBool("loggedIn", true);
                         await GetIt.I
                             .get<SharedPreferences>()
-                            .setString("name", name.text);
+                            .setString("email", email.text);
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
