@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:recipe/models/ad.model.dart';
 import 'package:recipe/models/recipe.model.dart';
 import 'package:recipe/pages/login.dart';
 import 'package:recipe/utils/colors.dart';
@@ -16,8 +13,10 @@ import 'package:recipe/widgets/recommended_widget.dart';
 import 'package:recipe/widgets/section_header.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomeScreen extends StatefulWidget {
+import '../cubit/cubit.dart';
+import '../cubit/states.dart';
 
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
@@ -25,10 +24,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int sliderIndex = 0;
   CarouselController carouselController = CarouselController();
 
-  List<Ad> adsList = [];
   List<RecipeWidget> recipes = [
     RecipeWidget(
       recipe: Recipe(
@@ -77,263 +74,258 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
   ];
 
-  void getAds() async {
-    var adsData = await rootBundle.loadString("assets/data/sample.json");
-    var decodedData =
-        List<Map<String, dynamic>>.from(jsonDecode(adsData)['ads']);
-    adsList = decodedData.map((e) => Ad.fromJson(e)).toList();
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    getAds();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     String email = GetIt.I.get<SharedPreferences>().getString("email") ?? "";
     // String? email = PreferencesService.prefs?.getString("email") ?? "";
-    return SafeArea(
-      child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            leading: const Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: Numbers.appHorizontalPadding),
-              child: Icon(
-                Icons.sort,
-                color: Colors.black,
-              ),
-            ),
-            actions: [
-              const Padding(
-                padding: EdgeInsets.only(top: 16.0),
-                child: Badge(
-                    alignment: Alignment.topRight,
-                    child: Icon(
-                      Icons.notifications_none,
-                      color: Colors.black,
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: Numbers.appHorizontalPadding),
-                child: IconButton(
-                  onPressed: () async {
-                    await GetIt.I.get<SharedPreferences>().remove("loggedIn");
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ));
-
-                    // await PreferencesService.prefs?.remove("loggedIn");
-                    // setState(() {});
-                  },
-                  icon: const Icon(
-                    Icons.logout,
+    return BlocProvider(
+      create: (context) => HomeCubit()..getAds(),
+      child: BlocConsumer<HomeCubit, HomeStates>(
+        listener: (context, state) {},
+        builder: (context, state) => SafeArea(
+          child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                leading: const Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: Numbers.appHorizontalPadding),
+                  child: Icon(
+                    Icons.sort,
                     color: Colors.black,
                   ),
                 ),
-              )
-            ],
-          ),
-          body: adsList.isEmpty
-              ? const CircularProgressIndicator(
-                  color: Colors.deepOrange,
-                )
-              : SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: Numbers.appHorizontalPadding),
-                        child: Text(
-                          "Bonjour, $email",
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: ColorsConst.grayColor,
-                          ),
-                        ),
+                actions: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 16.0),
+                    child: Badge(
+                        alignment: Alignment.topRight,
+                        child: Icon(
+                          Icons.notifications_none,
+                          color: Colors.black,
+                        )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: Numbers.appHorizontalPadding),
+                    child: IconButton(
+                      onPressed: () async {
+                        await GetIt.I
+                            .get<SharedPreferences>()
+                            .remove("loggedIn");
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ));
+
+                        // await PreferencesService.prefs?.remove("loggedIn");
+                        // setState(() {});
+                      },
+                      icon: const Icon(
+                        Icons.logout,
+                        color: Colors.black,
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: Numbers.appHorizontalPadding),
-                        child: Text(
-                          "What would you like to cook today?",
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: Numbers.appHorizontalPadding),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              prefixIcon: const Icon(
-                                Icons.search,
+                    ),
+                  )
+                ],
+              ),
+              body: HomeCubit.get(context).adsList.isEmpty
+                  ? const CircularProgressIndicator(color: Colors.deepOrange)
+                  : SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: Numbers.appHorizontalPadding),
+                            child: Text(
+                              "Bonjour, $email",
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
                                 color: ColorsConst.grayColor,
                               ),
-                              hintText: "Search for recipes",
-                              hintStyle: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.normal,
-                                  color: ColorsConst.grayColor),
-                              filled: true,
-                              fillColor: ColorsConst.containerBgColor,
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.transparent),
-                                  borderRadius: BorderRadius.circular(10)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.transparent),
-                                  borderRadius: BorderRadius.circular(10))),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          CarouselSlider(
-                            carouselController: carouselController,
-                            options: CarouselOptions(
-                              height: 200.0,
-                              autoPlay: true,
-                              viewportFraction: .75,
-                              enlargeStrategy: CenterPageEnlargeStrategy.height,
-                              enlargeCenterPage: true,
-                              enlargeFactor: .3,
-                              onPageChanged: (index, _) {
-                                sliderIndex = index;
-                                setState(() {});
-                              },
                             ),
-                            items: adsList.map((ad) {
-                              return Builder(
-                                builder: (BuildContext context) {
-                                  return Stack(
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 5.0),
-                                        decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                          image: NetworkImage(ad.image ?? ""),
-                                          fit: BoxFit.fill,
-                                        )),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.all(8.0),
-                                        padding: const EdgeInsets.all(5.0),
-                                        decoration: BoxDecoration(
-                                            color: Colors.black38,
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        child: Text(
-                                          ad.title ?? "",
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            }).toList(),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                onPressed: () async {
-                                  await carouselController.previousPage();
-                                },
-                                icon: const Icon(Icons.arrow_back_ios),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: Numbers.appHorizontalPadding),
+                            child: Text(
+                              "What would you like to cook today?",
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 20,
                               ),
-                              IconButton(
-                                onPressed: () async {
-                                  await carouselController.nextPage();
-                                },
-                                icon: const Icon(Icons.arrow_forward_ios),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: Numbers.appHorizontalPadding),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                  prefixIcon: const Icon(
+                                    Icons.search,
+                                    color: ColorsConst.grayColor,
+                                  ),
+                                  hintText: "Search for recipes",
+                                  hintStyle: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.normal,
+                                      color: ColorsConst.grayColor),
+                                  filled: true,
+                                  fillColor: ColorsConst.containerBgColor,
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Colors.transparent),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Colors.transparent),
+                                      borderRadius: BorderRadius.circular(10))),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              CarouselSlider(
+                                carouselController: carouselController,
+                                options: CarouselOptions(
+                                  height: 200.0,
+                                  autoPlay: true,
+                                  viewportFraction: .75,
+                                  enlargeStrategy:
+                                      CenterPageEnlargeStrategy.height,
+                                  enlargeCenterPage: true,
+                                  enlargeFactor: .3,
+                                  onPageChanged: (index, _) {
+                                    HomeCubit.get(context)
+                                        .changeSliderIndex(index);
+                                  },
+                                ),
+                                items: HomeCubit.get(context).adsList.map((ad) {
+                                  return Builder(
+                                    builder: (BuildContext context) {
+                                      return Stack(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 5.0),
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                              image:
+                                                  NetworkImage(ad.image ?? ""),
+                                              fit: BoxFit.fill,
+                                            )),
+                                          ),
+                                          Container(
+                                            margin: const EdgeInsets.all(8.0),
+                                            padding: const EdgeInsets.all(5.0),
+                                            decoration: BoxDecoration(
+                                                color: Colors.black38,
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: Text(
+                                              ad.title ?? "",
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }).toList(),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    onPressed: () async {
+                                      await carouselController.previousPage();
+                                    },
+                                    icon: const Icon(Icons.arrow_back_ios),
+                                  ),
+                                  IconButton(
+                                    onPressed: () async {
+                                      await carouselController.nextPage();
+                                    },
+                                    icon: const Icon(Icons.arrow_forward_ios),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
+                          DotsIndicator(
+                            dotsCount: HomeCubit.get(context).adsList.length,
+                            position: HomeCubit.get(context).sliderIndex,
+                            onTap: (position) async {
+                              await carouselController.animateToPage(position);
+                            },
+                            decorator: DotsDecorator(
+                              activeColor: Colors.deepOrange,
+                              size: const Size.square(9.0),
+                              activeSize: const Size(18.0, 9.0),
+                              activeShape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0)),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          const SectionHeader(
+                              sectionName: "Today\'s Fresh Recipes"),
+                          const SizedBox(
+                            height: 18,
+                          ),
+                          SizedBox(
+                            height: 230,
+                            child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) => recipes[index],
+                                separatorBuilder: (context, index) =>
+                                    const VerticalDivider(
+                                      color: Colors.transparent,
+                                    ),
+                                itemCount: recipes.length),
+                          ),
+                          const SizedBox(
+                            height: 25,
+                          ),
+                          const SectionHeader(sectionName: "Recommended"),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          ListView.separated(
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.only(bottom: 10),
+                              itemBuilder: (context, index) =>
+                                  recommendedRecipes[index],
+                              separatorBuilder: (context, index) =>
+                                  const Divider(
+                                    color: Colors.transparent,
+                                  ),
+                              itemCount: recommendedRecipes.length)
                         ],
                       ),
-                      DotsIndicator(
-                        dotsCount: adsList.length,
-                        position: sliderIndex,
-                        onTap: (position) async {
-                          await carouselController.animateToPage(position);
-                          sliderIndex = position;
-                          setState(() {});
-                        },
-                        decorator: DotsDecorator(
-                          activeColor: Colors.deepOrange,
-                          size: const Size.square(9.0),
-                          activeSize: const Size(18.0, 9.0),
-                          activeShape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0)),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const SectionHeader(
-                          sectionName: "Today\'s Fresh Recipes"),
-                      const SizedBox(
-                        height: 18,
-                      ),
-                      SizedBox(
-                        height: 230,
-                        child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) => recipes[index],
-                            separatorBuilder: (context, index) =>
-                                const VerticalDivider(
-                                  color: Colors.transparent,
-                                ),
-                            itemCount: recipes.length),
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      const SectionHeader(sectionName: "Recommended"),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      ListView.separated(
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.only(bottom: 10),
-                          itemBuilder: (context, index) =>
-                              recommendedRecipes[index],
-                          separatorBuilder: (context, index) => const Divider(
-                                color: Colors.transparent,
-                              ),
-                          itemCount: recommendedRecipes.length)
-                    ],
-                  ),
-                )),
+                    )),
+        ),
+      ),
     );
   }
 }

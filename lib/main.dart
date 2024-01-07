@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:recipe/bloc_observer.dart';
 import 'package:recipe/pages/splash_screen.dart';
 import 'package:recipe/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
+  Bloc.observer = MyBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   try {
     var preference = await SharedPreferences.getInstance();
