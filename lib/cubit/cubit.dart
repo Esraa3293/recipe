@@ -16,14 +16,14 @@ class HomeCubit extends Cubit<HomeStates> {
 
   void getAds() async {
     try {
-      emit(HomeLoadingState());
+      emit(HomeGetAdsLoadingState());
       var adsData = await rootBundle.loadString("assets/data/sample.json");
       var decodedData =
           List<Map<String, dynamic>>.from(jsonDecode(adsData)['ads']);
       adsList = decodedData.map((e) => Ad.fromJson(e)).toList();
-      emit(HomeSuccessState());
+      emit(HomeGetAdsSuccessState());
     } catch (e) {
-      emit(HomeErrorState(e.toString()));
+      emit(HomeGetAdsErrorState(e.toString()));
       print(e);
     }
   }

@@ -2,14 +2,14 @@ abstract class HomeStates {}
 
 class HomeInitial extends HomeStates {}
 
-class HomeLoadingState extends HomeStates {}
+class HomeGetAdsLoadingState extends HomeStates {}
 
-class HomeSuccessState extends HomeStates {}
+class HomeGetAdsSuccessState extends HomeStates {}
 
-class HomeChangeSliderIndexState extends HomeStates {}
-
-class HomeErrorState extends HomeStates {
+class HomeGetAdsErrorState extends HomeStates {
   String error;
 
-  HomeErrorState(this.error);
+  HomeGetAdsErrorState(this.error);
 }
+
+class HomeChangeSliderIndexState extends HomeStates {}

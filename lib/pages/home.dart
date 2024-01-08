@@ -131,7 +131,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               body: HomeCubit.get(context).adsList.isEmpty
-                  ? const CircularProgressIndicator(color: Colors.deepOrange)
+                  ? const CircularProgressIndicator(
+                      color: ColorsConst.mainColor)
                   : SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -278,7 +279,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               await carouselController.animateToPage(position);
                             },
                             decorator: DotsDecorator(
-                              activeColor: Colors.deepOrange,
+                              activeColor: ColorsConst.mainColor,
                               size: const Size.square(9.0),
                               activeSize: const Size(18.0, 9.0),
                               activeShape: RoundedRectangleBorder(
