@@ -80,30 +80,22 @@ class _HomeScreenState extends State<HomeScreen> {
     String email = GetIt.I.get<SharedPreferences>().getString("email") ?? "";
     // String? email = PreferencesService.prefs?.getString("email") ?? "";
     return BlocProvider(
-      create: (context) =>
-      HomeCubit()
-        ..getAds(),
+      create: (context) => HomeCubit()..getAds(),
       child: SafeArea(
         child: Scaffold(
+          drawer: const DrawerWidget(),
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            leading: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: Numbers.appHorizontalPadding),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SideMenuPage(),
-                      ));
-                },
-                child: Icon(
-                  Icons.sort,
-                  color: Colors.black,
-                ),
-              ),
+            leading: Builder(
+              builder: (context) => IconButton(
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  icon: const Icon(
+                    Icons.sort,
+                    color: Colors.black,
+                  )),
             ),
             actions: const [
               Padding(
@@ -119,235 +111,219 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           body: BlocConsumer<HomeCubit, HomeStates>(
             listener: (context, state) {},
-            builder: (context, state) =>
-            HomeCubit
-                .get(context)
-                .adsList
-                .isEmpty
+            builder: (context, state) => HomeCubit.get(context).adsList.isEmpty
                 ? const CircularProgressIndicator(color: ColorsConst.mainColor)
                 : SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: Numbers.appHorizontalPadding),
-                    child: Text(
-                      "Bonjour, $email",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: ColorsConst.grayColor,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: Numbers.appHorizontalPadding),
-                    child: Text(
-                      "What would you like to cook today?",
-                      style: GoogleFonts.abrilFatface(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: Numbers.appHorizontalPadding),
-                    child: Row(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: SizedBox(
-                            width: 265,
-                            height: 35,
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  prefixIcon: const Icon(
-                                    Icons.search,
-                                    color: ColorsConst.grayColor,
-                                  ),
-                                  hintText: "Search for recipes",
-                                  hintStyle: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.normal,
-                                      color: ColorsConst.grayColor),
-                                  filled: true,
-                                  fillColor: ColorsConst.containerBgColor,
-                                  focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: Colors.transparent),
-                                      borderRadius:
-                                      BorderRadius.circular(10)),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: Colors.transparent),
-                                      borderRadius:
-                                      BorderRadius.circular(10))),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Numbers.appHorizontalPadding),
+                          child: Text(
+                            "Bonjour, $email",
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: ColorsConst.grayColor,
                             ),
                           ),
                         ),
                         const SizedBox(
-                          width: 20,
+                          height: 20,
                         ),
-                        Container(
-                          width: 35,
-                          height: 35,
-                          decoration: BoxDecoration(
-                              color: ColorsConst.containerBgColor,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: const Icon(Icons.tune),
-                        )
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Numbers.appHorizontalPadding),
+                          child: Text(
+                            "What would you like to cook today?",
+                            style: GoogleFonts.abrilFatface(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Numbers.appHorizontalPadding),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: SizedBox(
+                                  width: 265,
+                                  height: 35,
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                        prefixIcon: const Icon(
+                                          Icons.search,
+                                          color: ColorsConst.grayColor,
+                                        ),
+                                        hintText: "Search for recipes",
+                                        hintStyle: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.normal,
+                                            color: ColorsConst.grayColor),
+                                        filled: true,
+                                        fillColor: ColorsConst.containerBgColor,
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                                color: Colors.transparent),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                                color: Colors.transparent),
+                                            borderRadius:
+                                                BorderRadius.circular(10))),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                width: 35,
+                                height: 35,
+                                decoration: BoxDecoration(
+                                    color: ColorsConst.containerBgColor,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: const Icon(Icons.tune),
+                              )
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            CarouselSlider(
+                              carouselController: carouselController,
+                              options: CarouselOptions(
+                                height: 200.0,
+                                autoPlay: true,
+                                viewportFraction: .75,
+                                enlargeStrategy:
+                                    CenterPageEnlargeStrategy.height,
+                                enlargeCenterPage: true,
+                                enlargeFactor: .3,
+                                onPageChanged: (index, _) {
+                                  HomeCubit.get(context)
+                                      .changeSliderIndex(index);
+                                },
+                              ),
+                              items: HomeCubit.get(context).adsList.map((ad) {
+                                return Builder(
+                                  builder: (BuildContext context) {
+                                    return Stack(
+                                      children: [
+                                        Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                            image: NetworkImage(ad.image ?? ""),
+                                            fit: BoxFit.fill,
+                                          )),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.all(8.0),
+                                          padding: const EdgeInsets.all(5.0),
+                                          decoration: BoxDecoration(
+                                              color: Colors.black38,
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          child: Text(
+                                            ad.title ?? "",
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }).toList(),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                  onPressed: () async {
+                                    await carouselController.previousPage();
+                                  },
+                                  icon: const Icon(Icons.arrow_back_ios),
+                                ),
+                                IconButton(
+                                  onPressed: () async {
+                                    await carouselController.nextPage();
+                                  },
+                                  icon: const Icon(Icons.arrow_forward_ios),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        DotsIndicator(
+                          dotsCount: HomeCubit.get(context).adsList.length,
+                          position: HomeCubit.get(context).sliderIndex,
+                          onTap: (position) async {
+                            await carouselController.animateToPage(position);
+                          },
+                          decorator: DotsDecorator(
+                            activeColor: ColorsConst.mainColor,
+                            size: const Size.square(9.0),
+                            activeSize: const Size(18.0, 9.0),
+                            activeShape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0)),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        const SectionHeader(
+                            sectionName: "Today\'s Fresh Recipes"),
+                        const SizedBox(
+                          height: 18,
+                        ),
+                        SizedBox(
+                          height: 230,
+                          child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) => recipes[index],
+                              separatorBuilder: (context, index) =>
+                                  const VerticalDivider(
+                                    color: Colors.transparent,
+                                  ),
+                              itemCount: recipes.length),
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        const SectionHeader(sectionName: "Recommended"),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        ListView.separated(
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.only(bottom: 10),
+                            itemBuilder: (context, index) =>
+                                recommendedRecipes[index],
+                            separatorBuilder: (context, index) => const Divider(
+                                  color: Colors.transparent,
+                                ),
+                            itemCount: recommendedRecipes.length)
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      CarouselSlider(
-                        carouselController: carouselController,
-                        options: CarouselOptions(
-                          height: 200.0,
-                          autoPlay: true,
-                          viewportFraction: .75,
-                          enlargeStrategy:
-                          CenterPageEnlargeStrategy.height,
-                          enlargeCenterPage: true,
-                          enlargeFactor: .3,
-                          onPageChanged: (index, _) {
-                            HomeCubit.get(context)
-                                .changeSliderIndex(index);
-                          },
-                        ),
-                        items: HomeCubit
-                            .get(context)
-                            .adsList
-                            .map((ad) {
-                          return Builder(
-                            builder: (BuildContext context) {
-                              return Stack(
-                                children: [
-                                  Container(
-                                    width:
-                                    MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width,
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 5.0),
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(ad.image ?? ""),
-                                          fit: BoxFit.fill,
-                                        )),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.all(8.0),
-                                    padding: const EdgeInsets.all(5.0),
-                                    decoration: BoxDecoration(
-                                        color: Colors.black38,
-                                        borderRadius:
-                                        BorderRadius.circular(15)),
-                                    child: Text(
-                                      ad.title ?? "",
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        }).toList(),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              await carouselController.previousPage();
-                            },
-                            icon: const Icon(Icons.arrow_back_ios),
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              await carouselController.nextPage();
-                            },
-                            icon: const Icon(Icons.arrow_forward_ios),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  DotsIndicator(
-                    dotsCount: HomeCubit
-                        .get(context)
-                        .adsList
-                        .length,
-                    position: HomeCubit
-                        .get(context)
-                        .sliderIndex,
-                    onTap: (position) async {
-                      await carouselController.animateToPage(position);
-                    },
-                    decorator: DotsDecorator(
-                      activeColor: ColorsConst.mainColor,
-                      size: const Size.square(9.0),
-                      activeSize: const Size(18.0, 9.0),
-                      activeShape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const SectionHeader(
-                      sectionName: "Today\'s Fresh Recipes"),
-                  const SizedBox(
-                    height: 18,
-                  ),
-                  SizedBox(
-                    height: 230,
-                    child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) => recipes[index],
-                        separatorBuilder: (context, index) =>
-                        const VerticalDivider(
-                          color: Colors.transparent,
-                        ),
-                        itemCount: recipes.length),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  const SectionHeader(sectionName: "Recommended"),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ListView.separated(
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.only(bottom: 10),
-                      itemBuilder: (context, index) =>
-                      recommendedRecipes[index],
-                      separatorBuilder: (context, index) =>
-                      const Divider(
-                        color: Colors.transparent,
-                      ),
-                      itemCount: recommendedRecipes.length)
-                ],
-              ),
-            ),
           ),
         ),
       ),
