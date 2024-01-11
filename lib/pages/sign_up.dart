@@ -7,7 +7,6 @@ import 'package:recipe/utils/images.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
-
   const SignUp({super.key});
 
   @override

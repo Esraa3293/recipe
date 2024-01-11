@@ -162,11 +162,11 @@ class _RecommendedWidgetState extends State<RecommendedWidget> {
               },
               child: (favorite
                   ? const Icon(
-                      Icons.favorite_border,
+                      Icons.favorite_border_rounded,
                       color: ColorsConst.grayColor,
                     )
                   : const Icon(
-                      Icons.favorite,
+                Icons.favorite_rounded,
                       color: ColorsConst.mainColor,
                     )),
             ),

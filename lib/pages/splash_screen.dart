@@ -59,7 +59,10 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(ImagesPath.baseHeader),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Image.asset(ImagesPath.baseHeader),
+            ),
             const CircularProgressIndicator()
           ],
         ),

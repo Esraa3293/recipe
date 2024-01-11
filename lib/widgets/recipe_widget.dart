@@ -141,18 +141,20 @@ class _RecipeWidgetState extends State<RecipeWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(16.0),
             child: InkWell(
                 onTap: () {
                   toggleFavorite();
                 },
                 child: (favorite
                     ? const Icon(
-                        Icons.favorite_border,
+                        Icons.favorite_border_rounded,
+                        size: 30,
                         color: ColorsConst.grayColor,
                       )
                     : const Icon(
-                        Icons.favorite,
+                        Icons.favorite_rounded,
+                        size: 30,
                         color: ColorsConst.mainColor,
                       ))),
           ),

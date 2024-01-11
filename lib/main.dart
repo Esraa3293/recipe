@@ -31,7 +31,8 @@ class MyApplication extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
           fontFamily: 'Hellix',
-          colorScheme: ColorScheme.fromSeed(seedColor: ColorsConst.mainColor),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: ColorsConst.mainColor, primary: ColorsConst.mainColor),
           inputDecorationTheme: InputDecorationTheme(
             labelStyle: const TextStyle(color: Colors.grey),
             prefixIconColor: Colors.grey,

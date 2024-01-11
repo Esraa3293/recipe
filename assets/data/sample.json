@@ -2,7 +2,7 @@
   "ads": [
     {
       "title": "New Meals",
-      "image": "https://www.southernliving.com/thmb/HSEUOjJVCl4kIRJRMAZ1eblQlWE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Millionaire_Spaghetti_019-34e9c04b1ae8405088f53450a048e413.jpg"
+      "image": "https://img.freepik.com/premium-photo/grilled-salmon-with-spinach-garlic-cream-sauce-plate-top-view_186277-4454.jpg?w=740"
     },
     {
       "title": "Healthy Meals",
@@ -14,16 +14,16 @@
     },
     {
       "title": "Pasta Meals",
-      "image": "https://thecozycook.com/wp-content/uploads/2022/04/Lasagna-Recipe-f.jpg"
+      "image": "https://img.freepik.com/premium-photo/top-view-tasty-fettucine-alfredo-light-pink-background_375133-1638.jpg?w=740"
     },
     {
       "title": "Chicken Meals",
-      "image": "https://ohsweetbasil.com/wp-content/uploads/easy-teriyaki-chicken-recipe-2-scaled.jpg"
+      "image": "https://as2.ftcdn.net/v2/jpg/02/12/53/93/1000_F_212539337_f1hsnmgCHHruaof9jnRsvx1NjgtiB3Hh.jpg"
     }
   ],
   "recipes": [
     {
-      "imagePath": "https://d3gg7p8kl1yfy0.cloudfront.net/detail_bb_French_Toast_wBerries_2-0004_2022.jpg",
+      "imagePath": "https://images.rawpixel.com/image_png_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcGYtczc5LW1vbmlrYS1ncmFia293c2thLWZyZW5jaC10b2FzdC02LTAxXzEucG5n.png",
       "mealType": "Breakfast",
       "title": "French Toast with Berries",
       "rating": 5,

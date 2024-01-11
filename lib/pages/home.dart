@@ -3,8 +3,9 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe/models/recipe.model.dart';
-import 'package:recipe/pages/login.dart';
+import 'package:recipe/pages/side_menu_page.dart';
 import 'package:recipe/utils/colors.dart';
 import 'package:recipe/utils/images.dart';
 import 'package:recipe/utils/numbers.dart';
@@ -87,17 +88,26 @@ class _HomeScreenState extends State<HomeScreen> {
               appBar: AppBar(
                 backgroundColor: Colors.transparent,
                 elevation: 0,
-                leading: const Padding(
+                leading: Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: Numbers.appHorizontalPadding),
-                  child: Icon(
-                    Icons.sort,
-                    color: Colors.black,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SideMenuPage(),
+                          ));
+                    },
+                    child: Icon(
+                      Icons.sort,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
-                actions: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 16.0),
+                actions: const [
+                  Padding(
+                    padding: EdgeInsets.only(top: 16.0, right: 20.0),
                     child: Badge(
                         alignment: Alignment.topRight,
                         child: Icon(
@@ -105,29 +115,29 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.black,
                         )),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: Numbers.appHorizontalPadding),
-                    child: IconButton(
-                      onPressed: () async {
-                        await GetIt.I
-                            .get<SharedPreferences>()
-                            .remove("loggedIn");
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ));
-
-                        // await PreferencesService.prefs?.remove("loggedIn");
-                        // setState(() {});
-                      },
-                      icon: const Icon(
-                        Icons.logout,
-                        color: Colors.black,
-                      ),
-                    ),
-                  )
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(
+                  //       horizontal: Numbers.appHorizontalPadding),
+                  //   child: IconButton(
+                  //     onPressed: () async {
+                  //       await GetIt.I
+                  //           .get<SharedPreferences>()
+                  //           .remove("loggedIn");
+                  //       Navigator.pushReplacement(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //             builder: (context) => const LoginScreen(),
+                  //           ));
+                  //
+                  //       // await PreferencesService.prefs?.remove("loggedIn");
+                  //       // setState(() {});
+                  //     },
+                  //     icon: const Icon(
+                  //       Icons.logout,
+                  //       color: Colors.black,
+                  //     ),
+                  //   ),
+                  // )
                 ],
               ),
               body: HomeCubit.get(context).adsList.isEmpty
@@ -153,12 +163,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: Numbers.appHorizontalPadding),
                             child: Text(
                               "What would you like to cook today?",
-                              style: TextStyle(
+                              style: GoogleFonts.abrilFatface(
                                 fontWeight: FontWeight.normal,
                                 fontSize: 20,
                               ),
@@ -170,31 +180,55 @@ class _HomeScreenState extends State<HomeScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: Numbers.appHorizontalPadding),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  prefixIcon: const Icon(
-                                    Icons.search,
-                                    color: ColorsConst.grayColor,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: SizedBox(
+                                    width: 265,
+                                    height: 35,
+                                    child: TextField(
+                                      decoration: InputDecoration(
+                                          prefixIcon: const Icon(
+                                            Icons.search,
+                                            color: ColorsConst.grayColor,
+                                          ),
+                                          hintText: "Search for recipes",
+                                          hintStyle: const TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.normal,
+                                              color: ColorsConst.grayColor),
+                                          filled: true,
+                                          fillColor:
+                                              ColorsConst.containerBgColor,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                  color: Colors.transparent),
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                  color: Colors.transparent),
+                                              borderRadius:
+                                                  BorderRadius.circular(10))),
+                                    ),
                                   ),
-                                  hintText: "Search for recipes",
-                                  hintStyle: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.normal,
-                                      color: ColorsConst.grayColor),
-                                  filled: true,
-                                  fillColor: ColorsConst.containerBgColor,
-                                  focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: Colors.transparent),
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Container(
+                                  width: 35,
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                      color: ColorsConst.containerBgColor,
                                       borderRadius: BorderRadius.circular(10)),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: Colors.transparent),
-                                      borderRadius: BorderRadius.circular(10))),
+                                  child: const Icon(Icons.tune),
+                                )
+                              ],
                             ),
                           ),
                           const SizedBox(
-                            height: 20,
+                            height: 25,
                           ),
                           Stack(
                             alignment: Alignment.center,
