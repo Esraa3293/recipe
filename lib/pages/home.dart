@@ -89,13 +89,15 @@ class _HomeScreenState extends State<HomeScreen> {
             elevation: 0,
             leading: Builder(
               builder: (context) => IconButton(
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  icon: const Icon(
-                    Icons.sort,
-                    color: Colors.black,
-                  )),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                icon: const Icon(
+                  Icons.sort,
+                  color: Colors.black,
+                ),
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              ),
             ),
             actions: const [
               Padding(
