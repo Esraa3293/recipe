@@ -21,7 +21,7 @@ class HomeCubit extends Cubit<HomeStates> {
       var decodedData =
           List<Map<String, dynamic>>.from(jsonDecode(adsData)['ads']);
       adsList = decodedData.map((e) => Ad.fromJson(e)).toList();
-      emit(HomeGetAdsSuccessState());
+      emit(HomeGetAdsSuccessState(adsList));
     } catch (e) {
       emit(HomeGetAdsErrorState(e.toString()));
       print(e);
