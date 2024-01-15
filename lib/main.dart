@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:recipe/bloc_observer.dart';
+import 'package:provider/provider.dart';
 import 'package:recipe/pages/splash_screen.dart';
+import 'package:recipe/providers/ads_provider.dart';
 import 'package:recipe/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-  Bloc.observer = MyBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   try {
     var preference = await SharedPreferences.getInstance();
@@ -20,7 +19,11 @@ void main() async {
     print("Error in Preferences init $e");
   }
 
-  runApp(const MyApplication());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (context) => AdsProvider(),
+    )
+  ], child: const MyApplication()));
 }
 
 class MyApplication extends StatelessWidget {
