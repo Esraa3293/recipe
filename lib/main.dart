@@ -1,8 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe/firebase_options.dart';
 import 'package:recipe/pages/splash_screen.dart';
 import 'package:recipe/providers/ads_provider.dart';
+import 'package:recipe/providers/app_auth_provider.dart';
 import 'package:recipe/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,6 +14,9 @@ void main() async {
   try {
     var preference = await SharedPreferences.getInstance();
     GetIt.I.registerSingleton<SharedPreferences>(preference);
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
     // if (PreferencesService.prefs != null) {
     //   print("Preferences init successfully");
@@ -21,7 +27,10 @@ void main() async {
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
-      create: (context) => AdsProvider(),
+      create: (_) => AdsProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => AppAuthProvider(),
     )
   ], child: const MyApplication()));
 }

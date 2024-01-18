@@ -1,14 +1,12 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:recipe/pages/home.dart';
 import 'package:recipe/pages/intro_page.dart';
 import 'package:recipe/utils/images.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
-
   const SplashScreen({super.key});
 
   @override
@@ -23,30 +21,22 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void initSplash() async {
-    await Future.delayed(
-      const Duration(seconds: 3),
-      () {
-        if (GetIt.I.get<SharedPreferences>().getBool("loggedIn") ?? false) {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const HomeScreen(),
-              ));
-        } else {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const IntroPage(),
-              ));
-        }
-
-        // Navigator.pushReplacementNamed(
-        //     context,
-        //     PreferencesService.checkLoggedIn()
-        //         ? HomeScreen.routeName
-        //         : IntroPage.routeName);
-      },
-    );
+    await Future.delayed(const Duration(seconds: 2));
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user == null) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const IntroPage(),
+            ));
+      } else {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const HomeScreen(),
+            ));
+      }
+    });
   }
 
   @override
