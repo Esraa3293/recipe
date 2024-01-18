@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import 'package:recipe/pages/home.dart';
-import 'package:recipe/pages/login.dart';
+import 'package:recipe/providers/app_auth_provider.dart';
 import 'package:recipe/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -112,26 +113,25 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 style: TextStyle(color: ColorsConst.grayColor),
               ),
             ),
-            InkWell(
-              onTap: () async {
-                await GetIt.I.get<SharedPreferences>().remove("loggedIn");
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginScreen(),
-                    ));
-                setState(() {});
+            Consumer<AppAuthProvider>(
+              builder: (context, authProvider, child) {
+                return InkWell(
+                  onTap: () async {
+                    await authProvider.signOut();
+                    authProvider.openLoginScreen(context);
+                  },
+                  child: const ListTile(
+                    leading: Icon(
+                      Icons.logout,
+                      color: ColorsConst.grayColor,
+                    ),
+                    title: Text(
+                      "Sign Out",
+                      style: TextStyle(color: ColorsConst.grayColor),
+                    ),
+                  ),
+                );
               },
-              child: const ListTile(
-                leading: Icon(
-                  Icons.logout,
-                  color: ColorsConst.grayColor,
-                ),
-                title: Text(
-                  "Sign Out",
-                  style: TextStyle(color: ColorsConst.grayColor),
-                ),
-              ),
             )
           ],
         ),

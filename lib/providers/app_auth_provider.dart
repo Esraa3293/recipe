@@ -87,4 +87,12 @@ class AppAuthProvider extends ChangeNotifier {
       print(e);
     }
   }
+
+  Future<void> signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+    } catch (e) {
+      print(e);
+    }
+  }
 }
