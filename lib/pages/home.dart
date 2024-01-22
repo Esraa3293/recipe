@@ -84,8 +84,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     List<RecipeWidget>? recipes =
-        Provider.of<RecipesProvider>(context, listen: false)
-            .recipes
+        Provider.of<RecipesProvider>(context)
+        .recipes
             ?.map((recipe) => RecipeWidget(
                   recipe: recipe,
                 ))
