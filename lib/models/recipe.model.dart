@@ -23,7 +23,7 @@ class Recipe {
   Recipe.fromJson(Map<String, dynamic> data) {
     imagePath = data['imagePath'];
     title = data['title'];
-    title = data['description'];
+    description = data['description'];
     mealType = data['mealType'];
     nutFacts = data['numOfCalories'];
     prepTime = data['prepTime'];
