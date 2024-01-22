@@ -51,7 +51,7 @@ class _RecipeWidgetState extends State<RecipeWidget> {
                 children: [
                   Transform.translate(
                     offset: const Offset(40, 0),
-                    child: Image.asset(
+                    child: Image.network(
                       widget.recipe?.imagePath ?? "",
                       fit: BoxFit.cover,
                       width: 160,
@@ -102,7 +102,7 @@ class _RecipeWidgetState extends State<RecipeWidget> {
                     height: 7,
                   ),
                   Text(
-                    "${widget.recipe?.nutFacts ?? ""} Calories",
+                    widget.recipe?.nutFacts ?? "",
                     style: const TextStyle(
                         fontSize: 8,
                         fontWeight: FontWeight.normal,
@@ -122,7 +122,7 @@ class _RecipeWidgetState extends State<RecipeWidget> {
                         width: 5,
                       ),
                       Text(
-                        "${widget.recipe?.prepTime ?? ""} mins",
+                        widget.recipe?.prepTime ?? "",
                         style: const TextStyle(
                           fontSize: 8,
                           fontWeight: FontWeight.normal,
@@ -138,9 +138,9 @@ class _RecipeWidgetState extends State<RecipeWidget> {
                       const SizedBox(
                         width: 5,
                       ),
-                      const Text(
-                        "1 Serving",
-                        style: TextStyle(
+                      Text(
+                        "${widget.recipe?.serving ?? 0}",
+                        style: const TextStyle(
                           fontSize: 8,
                           fontWeight: FontWeight.normal,
                           color: ColorsConst.grayColor,
