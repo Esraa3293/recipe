@@ -5,9 +5,9 @@ import 'package:recipe/utils/colors.dart';
 import 'package:recipe/utils/numbers.dart';
 
 class RecipeWidget extends StatefulWidget {
-  Recipe? recipe = Recipe();
+  final Recipe? recipe;
 
-  RecipeWidget({this.recipe, super.key});
+  const RecipeWidget({this.recipe, super.key});
 
   @override
   State<RecipeWidget> createState() => _RecipeWidgetState();
@@ -19,6 +19,16 @@ class _RecipeWidgetState extends State<RecipeWidget> {
   void toggleFavorite() {
     favorite = !favorite;
     setState(() {});
+  }
+
+  // void init() async{
+  //   await Provider.of<RecipesProvider>(context, listen: false).getRecipes();
+  // }
+
+  @override
+  void initState() {
+    // init();
+    super.initState();
   }
 
   @override
@@ -61,6 +71,8 @@ class _RecipeWidgetState extends State<RecipeWidget> {
                   ),
                   Text(
                     widget.recipe?.title ?? "",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -80,7 +92,7 @@ class _RecipeWidgetState extends State<RecipeWidget> {
                     itemSize: 15,
                     itemBuilder: (context, _) => const Icon(
                       Icons.star,
-                      color: ColorsConst.mainColor,
+                      color: ColorsConst.primaryColor,
                     ),
                     onRatingUpdate: (rating) {
                       print(rating);
@@ -90,11 +102,11 @@ class _RecipeWidgetState extends State<RecipeWidget> {
                     height: 7,
                   ),
                   Text(
-                    "${widget.recipe?.numOfCalories ?? ""} Calories",
+                    "${widget.recipe?.nutFacts ?? ""} Calories",
                     style: const TextStyle(
                         fontSize: 8,
                         fontWeight: FontWeight.normal,
-                        color: ColorsConst.mainColor),
+                        color: ColorsConst.primaryColor),
                   ),
                   const SizedBox(
                     height: 7,
@@ -153,9 +165,9 @@ class _RecipeWidgetState extends State<RecipeWidget> {
                         color: ColorsConst.grayColor,
                       )
                     : const Icon(
-                        Icons.favorite_rounded,
+                  Icons.favorite_rounded,
                         size: 30,
-                        color: ColorsConst.mainColor,
+                        color: ColorsConst.primaryColor,
                       ))),
           ),
         ],

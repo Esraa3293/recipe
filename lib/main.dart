@@ -1,11 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:overlay_kit/overlay_kit.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe/firebase_options.dart';
 import 'package:recipe/pages/splash_screen.dart';
 import 'package:recipe/providers/ads_provider.dart';
 import 'package:recipe/providers/app_auth_provider.dart';
+import 'package:recipe/providers/recipes_provider.dart';
 import 'package:recipe/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,6 +33,9 @@ void main() async {
     ),
     ChangeNotifierProvider(
       create: (_) => AppAuthProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => RecipesProvider(),
     )
   ], child: const MyApplication()));
 }
@@ -40,24 +45,28 @@ class MyApplication extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-          fontFamily: 'Hellix',
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: ColorsConst.mainColor, primary: ColorsConst.mainColor),
-          inputDecorationTheme: InputDecorationTheme(
-            labelStyle: const TextStyle(color: Colors.grey),
-            prefixIconColor: Colors.grey,
-            suffixIconColor: Colors.grey,
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: const BorderSide(color: Colors.grey)),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: const BorderSide(color: Colors.grey)),
-          )),
-      debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+    return OverlayKit(
+      appPrimaryColor: ColorsConst.primaryColor,
+      child: MaterialApp(
+        theme: ThemeData(
+            fontFamily: 'Hellix',
+            colorScheme: ColorScheme.fromSeed(
+                seedColor: ColorsConst.primaryColor,
+                primary: ColorsConst.primaryColor),
+            inputDecorationTheme: InputDecorationTheme(
+              labelStyle: const TextStyle(color: Colors.grey),
+              prefixIconColor: Colors.grey,
+              suffixIconColor: Colors.grey,
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: const BorderSide(color: Colors.grey)),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: const BorderSide(color: Colors.grey)),
+            )),
+        debugShowCheckedModeBanner: false,
+        home: const SplashScreen(),
+      ),
     );
   }
 }

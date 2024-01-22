@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ButtonWidget extends StatelessWidget {
-  Route route;
-  String text;
+  final Route route;
+  final String text;
 
-  ButtonWidget(this.route, this.text, {super.key});
+  const ButtonWidget(this.route, this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {

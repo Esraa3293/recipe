@@ -5,9 +5,9 @@ import 'package:recipe/utils/colors.dart';
 import 'package:recipe/utils/numbers.dart';
 
 class RecommendedWidget extends StatefulWidget {
-  Recipe? recipe = Recipe();
+  final Recipe? recipe;
 
-  RecommendedWidget({this.recipe, super.key});
+  const RecommendedWidget({this.recipe, super.key});
 
   @override
   State<RecommendedWidget> createState() => _RecommendedWidgetState();
@@ -84,7 +84,7 @@ class _RecommendedWidgetState extends State<RecommendedWidget> {
                             itemSize: 15,
                             itemBuilder: (context, _) => const Icon(
                               Icons.star,
-                              color: ColorsConst.mainColor,
+                              color: ColorsConst.primaryColor,
                             ),
                             onRatingUpdate: (rating) {
                               print(rating);
@@ -94,11 +94,11 @@ class _RecommendedWidgetState extends State<RecommendedWidget> {
                             width: 8,
                           ),
                           Text(
-                            "${widget.recipe?.numOfCalories ?? ""} Calories",
+                            "${widget.recipe?.nutFacts ?? ""} Calories",
                             style: const TextStyle(
                                 fontSize: 8,
                                 fontWeight: FontWeight.normal,
-                                color: ColorsConst.mainColor),
+                                color: ColorsConst.primaryColor),
                           ),
                         ],
                       ),
@@ -166,8 +166,8 @@ class _RecommendedWidgetState extends State<RecommendedWidget> {
                       color: ColorsConst.grayColor,
                     )
                   : const Icon(
-                Icons.favorite_rounded,
-                      color: ColorsConst.mainColor,
+                      Icons.favorite_rounded,
+                      color: ColorsConst.primaryColor,
                     )),
             ),
           )

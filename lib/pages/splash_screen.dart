@@ -14,6 +14,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  StreamSubscription<User?>? _listener;
+
   @override
   void initState() {
     initSplash();
@@ -22,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void initSplash() async {
     await Future.delayed(const Duration(seconds: 2));
-    FirebaseAuth.instance.authStateChanges().listen((user) {
+    _listener = FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user == null) {
         Navigator.pushReplacement(
             context,
@@ -37,6 +39,12 @@ class _SplashScreenState extends State<SplashScreen> {
             ));
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _listener?.cancel();
+    super.dispose();
   }
 
   @override
