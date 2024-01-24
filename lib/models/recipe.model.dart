@@ -7,7 +7,7 @@ class Recipe {
   String? prepTime;
   int? serving;
   int? rating;
-  List<dynamic>? ingred;
+  List<String>? ingred;
 
   Recipe(
       {this.imagePath,
@@ -29,7 +29,9 @@ class Recipe {
     prepTime = data['prepTime'];
     serving = data['serving'];
     rating = data['rating'];
-    ingred = data['ingred'];
+    ingred = data['ingred'] != null
+        ? List<String>.from(data['ingred'].map((e) => e.toString()))
+        : null;
   }
 
   Map<String, dynamic> toJson() {
