@@ -21,16 +21,6 @@ class _RecipeWidgetState extends State<RecipeWidget> {
     setState(() {});
   }
 
-  // void init() async{
-  //   await Provider.of<RecipesProvider>(context, listen: false).getRecipes();
-  // }
-
-  @override
-  void initState() {
-    // init();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(

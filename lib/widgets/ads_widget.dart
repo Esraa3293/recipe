@@ -51,7 +51,7 @@ class _AdsWidgetState extends State<AdsWidget> {
                             carouselController: adsProvider.carouselController,
                             options: CarouselOptions(
                               height: 200.0,
-                              autoPlay: true,
+                              // autoPlay: true,
                               viewportFraction: .75,
                               enlargeStrategy: CenterPageEnlargeStrategy.height,
                               enlargeCenterPage: true,

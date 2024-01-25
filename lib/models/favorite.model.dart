@@ -1,4 +1,4 @@
-class Recipe {
+class Favorite {
   String? docId;
   String? imagePath;
   String? title;
@@ -7,24 +7,23 @@ class Recipe {
   String? nutFacts;
   String? prepTime;
   int? serving;
-  int? rating;
+  double? rating;
   List<String>? ingred;
   List<String>? favoriteUsersIds;
 
-  Recipe(
-      {this.docId,
-      this.imagePath,
-      this.title,
-      this.description,
-      this.mealType,
-      this.nutFacts,
-      this.prepTime,
-      this.serving,
-      this.rating,
-      this.ingred,
-      this.favoriteUsersIds});
+  Favorite({this.docId,
+    this.imagePath,
+    this.title,
+    this.description,
+    this.mealType,
+    this.nutFacts,
+    this.prepTime,
+    this.serving,
+    this.rating,
+    this.ingred,
+    this.favoriteUsersIds});
 
-  Recipe.fromJson(Map<String, dynamic> data, [String? id]) {
+  Favorite.fromJson(Map<String, dynamic> data, [String? id]) {
     docId = id;
     imagePath = data['imagePath'];
     title = data['title'];
