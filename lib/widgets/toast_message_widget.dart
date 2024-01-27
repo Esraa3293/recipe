@@ -32,18 +32,16 @@ class ToastMessage extends StatelessWidget {
                     : Colors.white),
         child: Padding(
           padding: const EdgeInsets.all(15),
-          child: Expanded(
-            child: Text(
-              message,
-              style: TextStyle(
-                  color: toastMessageStatus == ToastMessageStatus.normal
-                      ? Colors.black
-                      : Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18),
-              textAlign: TextAlign.start,
-              maxLines: 2,
-            ),
+          child: Text(
+            message,
+            style: TextStyle(
+                color: toastMessageStatus == ToastMessageStatus.normal
+                    ? Colors.black
+                    : Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 18),
+            textAlign: TextAlign.start,
+            maxLines: 2,
           ),
         ),
       ),

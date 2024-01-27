@@ -35,7 +35,7 @@ class IngredientsProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> addUserToIngredient(String ingredientId, bool isAdd) async {
+  Future<void> addIngredientToUser(String ingredientId, bool isAdd) async {
     try {
       OverlayLoadingProgress.start();
       isAdd

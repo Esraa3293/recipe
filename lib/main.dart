@@ -7,7 +7,6 @@ import 'package:recipe/firebase_options.dart';
 import 'package:recipe/pages/splash_screen.dart';
 import 'package:recipe/providers/ads_provider.dart';
 import 'package:recipe/providers/app_auth_provider.dart';
-import 'package:recipe/providers/favorites_provider.dart';
 import 'package:recipe/providers/ingredients_provider.dart';
 import 'package:recipe/providers/recipes_provider.dart';
 import 'package:recipe/utils/colors.dart';
@@ -42,9 +41,6 @@ void main() async {
     ChangeNotifierProvider(
       create: (_) => IngredientsProvider(),
     ),
-    ChangeNotifierProvider(
-      create: (_) => FavoritesProvider(),
-    )
   ], child: const MyApplication()));
 }
 

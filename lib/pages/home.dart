@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe/models/recipe.model.dart';
 import 'package:recipe/providers/recipes_provider.dart';
 import 'package:recipe/utils/colors.dart';
-import 'package:recipe/utils/images.dart';
 import 'package:recipe/utils/numbers.dart';
 import 'package:recipe/widgets/ads_widget.dart';
 import 'package:recipe/widgets/recipe_widget.dart';
@@ -23,38 +21,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late ZoomDrawerController controller;
-  List<RecommendedWidget> recommendedRecipes = [
-    RecommendedWidget(
-      recipe: Recipe(
-        imagePath: ImagesPath.meal1,
-        title: "Blueberry Muffins",
-        mealType: "Breakfast",
-        nutFacts: "120",
-        prepTime: "10",
-      ),
-    ),
-    RecommendedWidget(
-      recipe: Recipe(
-        imagePath: ImagesPath.meal5,
-        title: "Glazed Salmon",
-        mealType: "Main Dish",
-        nutFacts: "280",
-        prepTime: "45",
-      ),
-    ),
-    RecommendedWidget(
-      recipe: Recipe(
-        imagePath: ImagesPath.meal4,
-        title: "Asian Glazed Chicken Thighs",
-        mealType: "Main Dish",
-        nutFacts: "280",
-        prepTime: "45",
-      ),
-    ),
-  ];
 
   void init() async {
-    await Provider.of<RecipesProvider>(context, listen: false).getRecipes();
+    // await Provider.of<RecipesProvider>(context, listen: false).getRecipes();
+    await Provider.of<RecipesProvider>(context, listen: false)
+        .getFreshRecipes();
+    await Provider.of<RecipesProvider>(context, listen: false)
+        .getRecommendedRecipes();
   }
 
   @override
@@ -66,12 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<RecipeWidget>? recipes = Provider.of<RecipesProvider>(context)
-        .recipes
-        ?.map((recipe) => RecipeWidget(
-              recipe: recipe,
-            ))
-        .toList();
     String name = FirebaseAuth.instance.currentUser?.displayName ?? "";
     // String? email = PreferencesService.prefs?.getString("email") ?? "";
     return ZoomDrawer(
@@ -103,17 +70,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
             ),
-            actions: const [
-              Padding(
-                padding: EdgeInsets.only(top: 16.0, right: 20.0),
-                child: Badge(
-                    alignment: Alignment.topRight,
-                    child: Icon(
-                      Icons.notifications_none,
-                      color: Colors.black,
-                    )),
-              ),
-            ],
           ),
           body: SingleChildScrollView(
             child: Column(
@@ -210,10 +166,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 230,
                   child: Consumer<RecipesProvider>(
-                    builder: (context, recipeProvider, child) =>
-                        recipeProvider.recipes == null
+                    builder: (context, recipesProvider, child) =>
+                        recipesProvider.freshRecipes == null
                             ? const Center(child: CircularProgressIndicator())
-                            : (recipeProvider.recipes?.isEmpty ?? false)
+                            : (recipesProvider.recipes?.isEmpty ?? false)
                                 ? const Center(
                                     child: Text(
                                       "No Data Found!",
@@ -226,12 +182,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 : ListView.separated(
                                     scrollDirection: Axis.horizontal,
                                     itemBuilder: (context, index) =>
-                                        recipes[index],
+                                        RecipeWidget(
+                                            recipe: recipesProvider
+                                                .freshRecipes![index]),
                                     separatorBuilder: (context, index) =>
                                         const VerticalDivider(
                                           color: Colors.transparent,
                                         ),
-                                    itemCount: recipes!.length),
+                                    itemCount:
+                                        recipesProvider.freshRecipes!.length),
                   ),
                 ),
                 const SizedBox(
@@ -241,14 +200,34 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                ListView.separated(
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.only(bottom: 10),
-                    itemBuilder: (context, index) => recommendedRecipes[index],
-                    separatorBuilder: (context, index) => const Divider(
-                          color: Colors.transparent,
-                        ),
-                    itemCount: recommendedRecipes.length)
+                Consumer<RecipesProvider>(
+                  builder: (context, recipesProvider, child) =>
+                      recipesProvider.freshRecipes == null
+                          ? const Center(child: CircularProgressIndicator())
+                          : (recipesProvider.recipes?.isEmpty ?? false)
+                              ? const Center(
+                                  child: Text(
+                                    "No Data Found!",
+                                    style: TextStyle(
+                                        color: ColorsConst.primaryColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )
+                              : ListView.separated(
+                                  shrinkWrap: true,
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  itemBuilder: (context, index) =>
+                                      RecommendedWidget(
+                                          recipe: recipesProvider
+                                              .recommendedRecipes![index]),
+                                  separatorBuilder: (context, index) =>
+                                      const Divider(
+                                        color: Colors.transparent,
+                                      ),
+                                  itemCount: recipesProvider
+                                      .recommendedRecipes!.length),
+                )
               ],
             ),
           ),

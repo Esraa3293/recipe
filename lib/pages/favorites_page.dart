@@ -1,9 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe/models/favorite.model.dart';
-import 'package:recipe/providers/favorites_provider.dart';
+import 'package:recipe/providers/recipes_provider.dart';
 
 import '../utils/colors.dart';
 import '../utils/numbers.dart';
@@ -16,11 +16,9 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
-  Favorite favorite = Favorite();
-  bool isFavorite = false;
 
   void init() async {
-    await Provider.of<FavoritesProvider>(context, listen: false).getFavorites();
+    await Provider.of<RecipesProvider>(context, listen: false).getRecipes();
   }
 
   @override
@@ -43,12 +41,11 @@ class _FavoritesPageState extends State<FavoritesPage> {
               fontSize: 22, fontWeight: FontWeight.w500, color: Colors.black),
         ),
       ),
-      body: Consumer<FavoritesProvider>(
-        builder: (context, favoritesProvider, child) => favoritesProvider
-                    .favorites ==
+      body: Consumer<RecipesProvider>(
+        builder: (context, recipesProvider, child) => recipesProvider.recipes ==
                 null
             ? const Center(child: CircularProgressIndicator())
-            : (favoritesProvider.favorites?.isEmpty ?? false)
+            : (recipesProvider.recipes?.isEmpty ?? false)
                 ? const Center(
                     child: Text(
                       "No Data Found!",
@@ -73,14 +70,16 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                 child: Row(
                                   children: [
                                     SizedBox(
-                                      width: 75,
-                                      height: 45,
-                                      child: Image.network(
-                                        favoritesProvider
-                                                .favorites![index].imagePath ??
-                                            "",
-                                        fit: BoxFit.cover,
-                                        height: double.maxFinite,
+                                      width: 100,
+                                      height: 100,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: CachedNetworkImage(
+                                          fit: BoxFit.cover,
+                                          imageUrl: recipesProvider
+                                                  .recipes![index].imagePath ??
+                                              "",
+                                        ),
                                       ),
                                     ),
                                     const SizedBox(
@@ -93,8 +92,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            favoritesProvider.favorites![index]
-                                                    .mealType ??
+                                            recipesProvider
+                                                    .recipes![index].mealType ??
                                                 "",
                                             style: const TextStyle(
                                               color: ColorsConst.titleColor,
@@ -106,10 +105,11 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                             height: 3,
                                           ),
                                           Text(
-                                            favoritesProvider
-                                                    .favorites![index].title ??
+                                            recipesProvider
+                                                    .recipes![index].title ??
                                                 "",
                                             maxLines: 1,
+                                            textScaleFactor: .8,
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
                                               fontSize: 14,
@@ -126,7 +126,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                                 minRating: 1,
                                                 direction: Axis.horizontal,
                                                 allowHalfRating: true,
-                                                updateOnDrag: true,
                                                 unratedColor:
                                                     ColorsConst.grayColor,
                                                 itemCount: 5,
@@ -145,8 +144,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                                 width: 8,
                                               ),
                                               Text(
-                                                favoritesProvider
-                                                        .favorites![index]
+                                                recipesProvider.recipes![index]
                                                         .nutFacts ??
                                                     "",
                                                 style: const TextStyle(
@@ -172,8 +170,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                                 width: 5,
                                               ),
                                               Text(
-                                                favoritesProvider
-                                                        .favorites![index]
+                                                recipesProvider.recipes![index]
                                                         .prepTime ??
                                                     "",
                                                 style: const TextStyle(
@@ -197,7 +194,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                                     width: 5,
                                                   ),
                                                   Text(
-                                                    "${favoritesProvider.favorites![index].serving}",
+                                                    "${recipesProvider.recipes![index].serving}  Serving",
                                                     style: const TextStyle(
                                                       fontSize: 8,
                                                       fontWeight:
@@ -220,16 +217,20 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: InkWell(
                                   onTap: () {
-                                    favoritesProvider.addUsersToFavorites(
-                                        favorite.docId ?? "",
-                                        favoritesProvider.favorites![index]
+                                    recipesProvider.addFavoriteToUser(
+                                        recipesProvider.recipes![index].docId ??
+                                            "",
+                                        recipesProvider.recipes![index]
                                                 .favoriteUsersIds
                                                 ?.contains(FirebaseAuth.instance
                                                     .currentUser?.uid) ??
                                             false);
-                                    isFavorite = true;
                                   },
-                                  child: (isFavorite
+                                  child: (recipesProvider
+                                              .recipes![index].favoriteUsersIds
+                                              ?.contains(FirebaseAuth
+                                                  .instance.currentUser?.uid) ??
+                                          false
                                       ? const Icon(
                                           Icons.favorite_border_rounded,
                                           size: 30,
@@ -248,7 +249,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     separatorBuilder: (context, index) => const Divider(
                           color: Colors.transparent,
                         ),
-                    itemCount: favoritesProvider.favorites!.length),
+                    itemCount: recipesProvider.recipes!.length),
       ),
     );
   }

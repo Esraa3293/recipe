@@ -62,7 +62,7 @@ class _IngredientsPageState extends State<IngredientsPage> {
                                     ?.contains(
                                         FirebaseAuth.instance.currentUser?.uid),
                                 onChanged: (bool? value) {
-                                  ingredientsProvider.addUserToIngredient(
+                                  ingredientsProvider.addIngredientToUser(
                                       ingredientsProvider
                                               .ingredients![index].docId ??
                                           "",

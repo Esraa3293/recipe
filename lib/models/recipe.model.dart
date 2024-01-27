@@ -1,5 +1,6 @@
 class Recipe {
   String? docId;
+  bool? isFresh;
   String? imagePath;
   String? title;
   String? description;
@@ -13,6 +14,7 @@ class Recipe {
 
   Recipe(
       {this.docId,
+      this.isFresh,
       this.imagePath,
       this.title,
       this.description,
@@ -26,6 +28,7 @@ class Recipe {
 
   Recipe.fromJson(Map<String, dynamic> data, [String? id]) {
     docId = id;
+    isFresh = data['isFresh'];
     imagePath = data['imagePath'];
     title = data['title'];
     description = data['description'];
@@ -45,6 +48,7 @@ class Recipe {
   Map<String, dynamic> toJson() {
     return {
       "docId": docId,
+      "isFresh": isFresh,
       "imagePath": imagePath,
       "title": title,
       "description": description,

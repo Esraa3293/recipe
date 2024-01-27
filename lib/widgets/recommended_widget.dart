@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:recipe/models/recipe.model.dart';
@@ -7,25 +8,19 @@ import 'package:recipe/utils/numbers.dart';
 class RecommendedWidget extends StatefulWidget {
   final Recipe? recipe;
 
-  const RecommendedWidget({this.recipe, super.key});
+  const RecommendedWidget({required this.recipe, super.key});
 
   @override
   State<RecommendedWidget> createState() => _RecommendedWidgetState();
 }
 
 class _RecommendedWidgetState extends State<RecommendedWidget> {
-  bool favorite = false;
-
-  void toggleFavorite() {
-    favorite = !favorite;
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding:
-          const EdgeInsets.symmetric(horizontal: Numbers.appHorizontalPadding),
+      const EdgeInsets.symmetric(horizontal: Numbers.appHorizontalPadding),
       child: Stack(
         alignment: Alignment.topRight,
         children: [
@@ -38,9 +33,15 @@ class _RecommendedWidgetState extends State<RecommendedWidget> {
             child: Row(
               children: [
                 SizedBox(
-                  width: 75,
-                  height: 45,
-                  child: Image.asset(widget.recipe?.imagePath ?? ""),
+                  width: 100,
+                  height: 100,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: CachedNetworkImage(
+                      imageUrl: widget.recipe?.imagePath ?? "",
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   width: 5,
@@ -63,6 +64,7 @@ class _RecommendedWidgetState extends State<RecommendedWidget> {
                       ),
                       Text(
                         widget.recipe?.title ?? "",
+                        textScaleFactor: .8,
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -78,7 +80,6 @@ class _RecommendedWidgetState extends State<RecommendedWidget> {
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
-                            updateOnDrag: true,
                             unratedColor: ColorsConst.grayColor,
                             itemCount: 5,
                             itemSize: 15,
@@ -94,7 +95,7 @@ class _RecommendedWidgetState extends State<RecommendedWidget> {
                             width: 8,
                           ),
                           Text(
-                            "${widget.recipe?.nutFacts ?? ""} Calories",
+                            widget.recipe?.nutFacts ?? "",
                             style: const TextStyle(
                                 fontSize: 8,
                                 fontWeight: FontWeight.normal,
@@ -116,7 +117,7 @@ class _RecommendedWidgetState extends State<RecommendedWidget> {
                             width: 5,
                           ),
                           Text(
-                            "${widget.recipe?.prepTime ?? ""} mins",
+                            widget.recipe?.prepTime ?? "",
                             style: const TextStyle(
                               fontSize: 8,
                               fontWeight: FontWeight.normal,
@@ -126,19 +127,20 @@ class _RecommendedWidgetState extends State<RecommendedWidget> {
                           const SizedBox(
                             width: 17,
                           ),
-                          const Row(
+                          Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.room_service_outlined,
                                 size: 20,
                                 color: ColorsConst.grayColor,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
                               Text(
-                                "1 Serving",
-                                style: TextStyle(
+                                "${widget.recipe?.serving}  Serving",
+                                textScaleFactor: .9,
+                                style: const TextStyle(
                                   fontSize: 8,
                                   fontWeight: FontWeight.normal,
                                   color: ColorsConst.grayColor,
@@ -157,19 +159,11 @@ class _RecommendedWidgetState extends State<RecommendedWidget> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
-              onTap: () {
-                toggleFavorite();
-              },
-              child: (favorite
-                  ? const Icon(
-                      Icons.favorite_border_rounded,
-                      color: ColorsConst.grayColor,
-                    )
-                  : const Icon(
-                      Icons.favorite_rounded,
-                      color: ColorsConst.primaryColor,
-                    )),
-            ),
+                onTap: () {},
+                child: const Icon(
+                  Icons.favorite_outline_rounded,
+                  color: ColorsConst.grayColor,
+                )),
           )
         ],
       ),

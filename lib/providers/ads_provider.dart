@@ -16,10 +16,12 @@ class AdsProvider extends ChangeNotifier {
 
   void initCarousel() {
     carouselController = CarouselController();
+    notifyListeners();
   }
 
   void disposeCarousel() {
     carouselController = null;
+    notifyListeners();
   }
 
   void onPageChanged(int index) {
