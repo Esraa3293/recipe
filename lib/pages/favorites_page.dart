@@ -218,13 +218,12 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                 child: InkWell(
                                   onTap: () {
                                     recipesProvider.addFavoriteToUser(
-                                        recipesProvider.recipes![index].docId ??
-                                            "",
-                                        recipesProvider.recipes![index]
+                                        recipesProvider.recipes![index].docId!,
+                                        !(recipesProvider.recipes![index]
                                                 .favoriteUsersIds
                                                 ?.contains(FirebaseAuth.instance
                                                     .currentUser?.uid) ??
-                                            false);
+                                            false));
                                   },
                                   child: (recipesProvider
                                               .recipes![index].favoriteUsersIds
@@ -232,14 +231,14 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                                   .instance.currentUser?.uid) ??
                                           false
                                       ? const Icon(
-                                          Icons.favorite_border_rounded,
-                                          size: 30,
-                                          color: ColorsConst.grayColor,
-                                        )
-                                      : const Icon(
-                                          Icons.favorite_rounded,
+                                    Icons.favorite_rounded,
                                           size: 30,
                                           color: ColorsConst.primaryColor,
+                                        )
+                                      : const Icon(
+                                    Icons.favorite_border_rounded,
+                                          size: 30,
+                                          color: ColorsConst.grayColor,
                                         )),
                                 ),
                               )

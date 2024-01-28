@@ -47,6 +47,7 @@ class RecipesProvider extends ChangeNotifier {
       var result = await FirebaseFirestore.instance
           .collection('recipes')
           .where('isFresh', isEqualTo: true)
+          .limit(5)
           .get();
       if (result.docs.isNotEmpty) {
         _freshRecipes = result.docs
@@ -73,6 +74,7 @@ class RecipesProvider extends ChangeNotifier {
       var result = await FirebaseFirestore.instance
           .collection('recipes')
           .where('isFresh', isEqualTo: false)
+          .limit(5)
           .get();
       if (result.docs.isNotEmpty) {
         _recommendedRecipes = result.docs
@@ -112,8 +114,8 @@ class RecipesProvider extends ChangeNotifier {
               "favoriteUsersIds": FieldValue.arrayRemove(
                   [FirebaseAuth.instance.currentUser?.uid])
             });
+      await updateRecipe(recipeId);
       OverlayLoadingProgress.stop();
-      getRecipes();
     } catch (e) {
       OverlayLoadingProgress.stop();
       OverlayToastMessage.show(
@@ -122,6 +124,53 @@ class RecipesProvider extends ChangeNotifier {
           toastMessageStatus: ToastMessageStatus.failed,
         ),
       );
+    }
+  }
+
+  Future<void> updateRecipe(String recipeId) async {
+    try {
+      var result = await FirebaseFirestore.instance
+          .collection('recipes')
+          .doc(recipeId)
+          .get();
+      Recipe? updatedRecipe;
+      if (result.data() != null) {
+        updatedRecipe = Recipe.fromJson(result.data()!, result.id);
+      } else {
+        return;
+      }
+      var recipeIndex =
+          recipes?.indexWhere((recipe) => recipe.docId == recipeId);
+
+      if (recipeIndex != -1) {
+        recipes?.removeAt(recipeIndex!);
+        recipes?.insert(recipeIndex!, updatedRecipe);
+      }
+
+      var freshRecipeIndex =
+          freshRecipes?.indexWhere((recipe) => recipe.docId == recipeId);
+
+      if (freshRecipeIndex != -1) {
+        freshRecipes?.removeAt(freshRecipeIndex!);
+        freshRecipes?.insert(freshRecipeIndex!, updatedRecipe);
+      }
+
+      var recommendedRecipeIndex =
+          recommendedRecipes?.indexWhere((recipe) => recipe.docId == recipeId);
+
+      if (recommendedRecipeIndex != -1) {
+        recommendedRecipes?.removeAt(recommendedRecipeIndex!);
+        recommendedRecipes?.insert(recommendedRecipeIndex!, updatedRecipe);
+      }
+      notifyListeners();
+    } catch (e) {
+      OverlayToastMessage.show(
+        widget: ToastMessage(
+          message: e.toString(),
+          toastMessageStatus: ToastMessageStatus.failed,
+        ),
+      );
+      notifyListeners();
     }
   }
 }

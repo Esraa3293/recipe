@@ -179,18 +179,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                   )
-                                : ListView.separated(
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) =>
-                                        RecipeWidget(
-                                            recipe: recipesProvider
-                                                .freshRecipes![index]),
-                                    separatorBuilder: (context, index) =>
-                                        const VerticalDivider(
-                                          color: Colors.transparent,
-                                        ),
-                                    itemCount:
-                                        recipesProvider.freshRecipes!.length),
+                                : Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal:
+                                            Numbers.appHorizontalPadding),
+                                    child: ListView.separated(
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) =>
+                                            RecipeWidget(
+                                                recipe: recipesProvider
+                                                    .freshRecipes![index]),
+                                        separatorBuilder: (context, index) =>
+                                            const VerticalDivider(
+                                              color: Colors.transparent,
+                                            ),
+                                        itemCount: recipesProvider
+                                            .freshRecipes!.length),
+                                  ),
                   ),
                 ),
                 const SizedBox(
@@ -226,7 +231,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         color: Colors.transparent,
                                       ),
                                   itemCount: recipesProvider
-                                      .recommendedRecipes!.length),
+                                          .recommendedRecipes?.length ??
+                                      0),
                 )
               ],
             ),

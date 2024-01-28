@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipe/pages/all_recipes_page.dart';
 import 'package:recipe/utils/colors.dart';
 import 'package:recipe/utils/numbers.dart';
 
@@ -22,12 +23,21 @@ class SectionHeader extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const Text(
-            "See All",
-            style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: ColorsConst.primaryColor),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AllRecipesPage(),
+                  ));
+            },
+            child: const Text(
+              "See All",
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: ColorsConst.primaryColor),
+            ),
           )
         ],
       ),

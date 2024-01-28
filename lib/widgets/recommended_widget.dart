@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:recipe/models/recipe.model.dart';
+import 'package:recipe/providers/recipes_provider.dart';
 import 'package:recipe/utils/colors.dart';
 import 'package:recipe/utils/numbers.dart';
 
@@ -15,12 +18,11 @@ class RecommendedWidget extends StatefulWidget {
 }
 
 class _RecommendedWidgetState extends State<RecommendedWidget> {
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding:
-      const EdgeInsets.symmetric(horizontal: Numbers.appHorizontalPadding),
+          const EdgeInsets.symmetric(horizontal: Numbers.appHorizontalPadding),
       child: Stack(
         alignment: Alignment.topRight,
         children: [
@@ -159,11 +161,27 @@ class _RecommendedWidgetState extends State<RecommendedWidget> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
-                onTap: () {},
-                child: const Icon(
-                  Icons.favorite_outline_rounded,
-                  color: ColorsConst.grayColor,
-                )),
+                onTap: () {
+                  Provider.of<RecipesProvider>(context, listen: false)
+                      .addFavoriteToUser(
+                          widget.recipe!.docId!,
+                          !(widget.recipe!.favoriteUsersIds?.contains(
+                                  FirebaseAuth.instance.currentUser?.uid) ??
+                              false));
+                },
+                child: (widget.recipe!.favoriteUsersIds?.contains(
+                            FirebaseAuth.instance.currentUser?.uid) ??
+                        false
+                    ? const Icon(
+                        Icons.favorite_rounded,
+                        color: ColorsConst.primaryColor,
+                        size: 30,
+                      )
+                    : const Icon(
+                        Icons.favorite_outline_rounded,
+                        color: ColorsConst.grayColor,
+                        size: 30,
+                      ))),
           )
         ],
       ),
