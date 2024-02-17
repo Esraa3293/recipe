@@ -31,25 +31,6 @@ class RecipesProvider extends ChangeNotifier {
 
   List<Recipe>? get filteredRecipes => _filteredRecipes;
 
-  // Future<List<Recipe>> filter(List<Recipe> recipesList, int index) async {
-  //   try {
-  //     var result = await FirebaseFirestore.instance
-  //         .collection('recipes')
-  //         .where(MealType.dinner.name.contains(recipesList[index].mealType!))
-  //         .get();
-  //     if (result.docs.isNotEmpty) {
-  //       recipesList = result.docs
-  //           .map((doc) => Recipe.fromJson(doc.data(), doc.id))
-  //           .toList();
-  //     } else {
-  //       recipesList = [];
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   return recipesList;
-  // }
-
   var userSelectedValue = {};
   int servingSliderValue = 1;
   int timeSliderValue = 25;
@@ -105,13 +86,6 @@ class RecipesProvider extends ChangeNotifier {
           .where("prepTime", isEqualTo: userSelectedValue['prepTime'])
           .where("calories", isEqualTo: userSelectedValue['calories'])
           .get();
-      // var servingFilter =
-      //     await ref.where("serving", isEqualTo: userSelectedValue['serving']);
-      // for (var entry in userSelectedValue.entries) {
-      //   ref.where(entry.key, isEqualTo: entry.value);
-      // }
-      // ref.where("mealType", isEqualTo: userSelectedValue['mealType']);
-      // var result = await ref.get();
       if (result.docs.isNotEmpty) {
         _filteredRecipes = result.docs
             .map((doc) => Recipe.fromJson(doc.data(), doc.id))
@@ -243,7 +217,7 @@ class RecipesProvider extends ChangeNotifier {
           .doc(recipeId)
           .update({
         "recentlyViewedUsersIds":
-            FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
+        FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
       });
     } catch (e) {
       OverlayToastMessage.show(
@@ -262,7 +236,7 @@ class RecipesProvider extends ChangeNotifier {
           .doc(recipeId)
           .update({
         "recentlyViewedUsersIds":
-            FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
+        FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
       });
     } catch (e) {
       OverlayToastMessage.show(
