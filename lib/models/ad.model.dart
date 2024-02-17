@@ -1,15 +1,15 @@
 class Ad {
   String? title;
-  String? image;
+  String? imageUrl;
 
   Ad();
 
   Ad.fromJson(Map<String, dynamic> data) {
     title = data['title'];
-    image = data['image'];
+    imageUrl = data['imageUrl'];
   }
 
   Map<String, dynamic> toJson() {
-    return {"title": title, "image": image};
+    return {"title": title, "imageUrl": imageUrl};
   }
 }

@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:overlay_kit/overlay_kit.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe/firebase_options.dart';
@@ -9,23 +11,18 @@ import 'package:recipe/providers/ads_provider.dart';
 import 'package:recipe/providers/app_auth_provider.dart';
 import 'package:recipe/providers/ingredients_provider.dart';
 import 'package:recipe/providers/recipes_provider.dart';
+import 'package:recipe/providers/settings_provider.dart';
 import 'package:recipe/utils/colors.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:recipe/utils/my_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    var preference = await SharedPreferences.getInstance();
-    GetIt.I.registerSingleton<SharedPreferences>(preference);
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-
-    // if (PreferencesService.prefs != null) {
-    //   print("Preferences init successfully");
-    // }
   } catch (e) {
-    print("Error in Preferences init $e");
+    print(e.toString());
   }
 
   runApp(MultiProvider(providers: [
@@ -41,6 +38,9 @@ void main() async {
     ChangeNotifierProvider(
       create: (_) => IngredientsProvider(),
     ),
+    ChangeNotifierProvider(
+      create: (context) => SettingsProvider(),
+    ),
   ], child: const MyApplication()));
 }
 
@@ -49,28 +49,33 @@ class MyApplication extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OverlayKit(
-      appPrimaryColor: ColorsConst.primaryColor,
-      child: MaterialApp(
-        theme: ThemeData(
-            fontFamily: 'Hellix',
-            colorScheme: ColorScheme.fromSeed(
-                seedColor: ColorsConst.primaryColor,
-                primary: ColorsConst.primaryColor),
-            inputDecorationTheme: InputDecorationTheme(
-              labelStyle: const TextStyle(color: Colors.grey),
-              prefixIconColor: Colors.grey,
-              suffixIconColor: Colors.grey,
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: const BorderSide(color: Colors.grey)),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: const BorderSide(color: Colors.grey)),
-            )),
-        debugShowCheckedModeBanner: false,
-        home: const SplashScreen(),
-      ),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      // minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return OverlayKit(
+          appPrimaryColor: ColorsConst.primaryColor,
+          child: Consumer<SettingsProvider>(
+            builder: (context, settingsProvider, child) => MaterialApp(
+              locale: Locale(settingsProvider.languageCode),
+              localizationsDelegates: const [
+                AppLocalizations.delegate, // Add this line
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('en'),
+                Locale('ar'),
+              ],
+              theme: MyThemeData.lightTheme,
+              debugShowCheckedModeBanner: false,
+              home: const SplashScreen(),
+            ),
+          ),
+        );
+      },
     );
   }
 }

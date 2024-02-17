@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:recipe/pages/login.dart';
-import 'package:recipe/pages/sign_up.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:recipe/pages/sign_in_page.dart';
+import 'package:recipe/pages/sign_up_page.dart';
+import 'package:recipe/utils/colors.dart';
 import 'package:recipe/utils/images.dart';
+import 'package:recipe/utils/text_styles.dart';
 import 'package:recipe/widgets/button_widget.dart';
 
 class IntroPage extends StatelessWidget {
-  // static const String routeName = "Intro";
-
   const IntroPage({super.key});
 
   @override
@@ -19,43 +20,50 @@ class IntroPage extends StatelessWidget {
             fit: BoxFit.cover,
             width: double.infinity,
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * .2,
-                child: Image.asset(ImagesPath.baseHeader),
-              ),
-              const Text(
-                "Cooking Done The Easy Way",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20).r,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Spacer(),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * .2,
+                  child: Image.asset(ImagesPath.baseHeader),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(50.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    ButtonWidget(
-                        MaterialPageRoute(
-                          builder: (context) => const SignUp(),
-                        ),
-                        "Register"),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ButtonWidget(
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ),
-                        "Sign In")
-                  ],
+                SizedBox(
+                  height: 10.h,
                 ),
-              ),
-            ],
+                Text(
+                  "Cooking Done The Easy Way",
+                  style: hellix14w400().copyWith(color: ColorsConst.grayColor),
+                  textAlign: TextAlign.center,
+                ),
+                const Spacer(),
+                ButtonWidget(
+                  MaterialPageRoute(
+                    builder: (context) => const SignUpPage(),
+                  ),
+                  "Register",
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignInPage(),
+                          ));
+                    },
+                    child: Text(
+                      "Sign In",
+                      style:
+                          hellix16white().copyWith(fontWeight: FontWeight.w600),
+                    )),
+              ],
+            ),
           )
         ],
       ),

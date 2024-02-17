@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:recipe/utils/toast_message_status.dart';
 
 class ToastMessage extends StatelessWidget {
@@ -13,25 +14,25 @@ class ToastMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15).r,
       child: Container(
         decoration: BoxDecoration(
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                spreadRadius: 3,
-                blurRadius: 10,
-                offset: Offset(0, 5),
+                spreadRadius: 3.r,
+                blurRadius: 10.r,
+                offset: const Offset(0, 5),
                 color: Colors.black12,
               )
             ],
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(15.r),
             color: toastMessageStatus == ToastMessageStatus.success
                 ? Colors.green
                 : toastMessageStatus == ToastMessageStatus.failed
                     ? Colors.red
                     : Colors.white),
         child: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(15).r,
           child: Text(
             message,
             style: TextStyle(

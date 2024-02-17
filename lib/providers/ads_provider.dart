@@ -16,13 +16,11 @@ class AdsProvider extends ChangeNotifier {
 
   void initCarousel() {
     carouselController = CarouselController();
-    notifyListeners();
   }
 
-  void disposeCarousel() {
-    carouselController = null;
-    notifyListeners();
-  }
+  // void disposeCarousel() {
+  //   carouselController = null;
+  // }
 
   void onPageChanged(int index) {
     sliderIndex = index;
@@ -35,12 +33,12 @@ class AdsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onArrowBackTapped() async {
+  Future<void> onArrowBackTapped() async {
     await carouselController?.previousPage();
     notifyListeners();
   }
 
-  void onArrowForwardTapped() async {
+  Future<void> onArrowForwardTapped() async {
     await carouselController?.nextPage();
     notifyListeners();
   }

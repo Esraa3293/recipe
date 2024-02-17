@@ -2,9 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe/providers/ads_provider.dart';
 import 'package:recipe/utils/colors.dart';
+import 'package:recipe/utils/text_styles.dart';
 
 class AdsWidget extends StatefulWidget {
   const AdsWidget({super.key});
@@ -21,14 +23,15 @@ class _AdsWidgetState extends State<AdsWidget> {
   @override
   void initState() {
     init();
+    Provider.of<AdsProvider>(context, listen: false).initCarousel();
     super.initState();
   }
 
-  @override
-  void dispose() {
-    Provider.of<AdsProvider>(context, listen: false).disposeCarousel();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   Provider.of<AdsProvider>(context, listen: false).disposeCarousel();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +39,9 @@ class _AdsWidgetState extends State<AdsWidget> {
         builder: (context, adsProvider, child) => adsProvider.adsList == null
             ? const Center(child: CircularProgressIndicator())
             : (adsProvider.adsList?.isEmpty ?? false)
-                ? const Text(
+                ? Text(
                     "No Data Found!",
-                    style: TextStyle(
-                        color: ColorsConst.primaryColor,
-                        fontWeight: FontWeight.bold),
+                    style: hellixw700(),
                   )
                 : Column(
                     children: [
@@ -50,8 +51,8 @@ class _AdsWidgetState extends State<AdsWidget> {
                           CarouselSlider(
                             carouselController: adsProvider.carouselController,
                             options: CarouselOptions(
-                              height: 200.0,
-                              // autoPlay: true,
+                              height: 200.0.h,
+                              autoPlay: true,
                               viewportFraction: .75,
                               enlargeStrategy: CenterPageEnlargeStrategy.height,
                               enlargeCenterPage: true,
@@ -68,10 +69,11 @@ class _AdsWidgetState extends State<AdsWidget> {
                                         width:
                                             MediaQuery.of(context).size.width,
                                         margin: const EdgeInsets.symmetric(
-                                            horizontal: 5.0),
+                                                horizontal: 5.0)
+                                            .r,
                                         child: CachedNetworkImage(
                                           fit: BoxFit.fill,
-                                          imageUrl: ad.image ?? "",
+                                          imageUrl: ad.imageUrl ?? "",
                                           placeholder: (context, url) =>
                                               const Center(
                                                   child:
@@ -81,17 +83,15 @@ class _AdsWidgetState extends State<AdsWidget> {
                                         ),
                                       ),
                                       Container(
-                                        margin: const EdgeInsets.all(8.0),
-                                        padding: const EdgeInsets.all(5.0),
+                                        margin: const EdgeInsets.all(8.0).r,
+                                        padding: const EdgeInsets.all(5.0).r,
                                         decoration: BoxDecoration(
                                             color: Colors.black38,
                                             borderRadius:
-                                                BorderRadius.circular(15)),
+                                                BorderRadius.circular(15.r)),
                                         child: Text(
                                           ad.title ?? "",
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.white),
+                                          style: hellix16white(),
                                         ),
                                       ),
                                     ],
@@ -104,13 +104,13 @@ class _AdsWidgetState extends State<AdsWidget> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               IconButton(
-                                onPressed: () =>
-                                    adsProvider.onArrowBackTapped(),
+                                onPressed: () async =>
+                                    await adsProvider.onArrowBackTapped(),
                                 icon: const Icon(Icons.arrow_back_ios),
                               ),
                               IconButton(
-                                onPressed: () =>
-                                    adsProvider.onArrowForwardTapped(),
+                                onPressed: () async =>
+                                    await adsProvider.onArrowForwardTapped(),
                                 icon: const Icon(Icons.arrow_forward_ios),
                               ),
                             ],
@@ -124,9 +124,9 @@ class _AdsWidgetState extends State<AdsWidget> {
                         decorator: DotsDecorator(
                           activeColor: ColorsConst.primaryColor,
                           size: const Size.square(9.0),
-                          activeSize: const Size(18.0, 9.0),
+                          activeSize: Size(18.0.w, 9.0.h),
                           activeShape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0)),
+                              borderRadius: BorderRadius.circular(5.0.r)),
                         ),
                       ),
                     ],

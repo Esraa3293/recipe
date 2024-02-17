@@ -1,9 +1,12 @@
 import 'package:flexible_grid_view/flexible_grid_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe/providers/recipes_provider.dart';
-import 'package:recipe/utils/colors.dart';
 import 'package:recipe/utils/numbers.dart';
+import 'package:recipe/utils/text_styles.dart';
 import 'package:recipe/widgets/recipe_widget.dart';
 
 class AllRecipesPage extends StatefulWidget {
@@ -28,36 +31,38 @@ class _AllRecipesPageState extends State<AllRecipesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        title: Text(
+          AppLocalizations.of(context)!.allRecipes,
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0.r),
         child: Consumer<RecipesProvider>(
-            builder: (context, recipesProvider, child) =>
-                recipesProvider.recipes == null
-                    ? const Center(child: CircularProgressIndicator())
-                    : (recipesProvider.recipes?.isEmpty ?? false)
-                        ? const Center(
-                            child: Text(
-                            'No Data Found!',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: ColorsConst.primaryColor),
-                          ))
-                        : Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: Numbers.appHorizontalPadding),
+            builder: (context, recipesProvider, child) => recipesProvider
+                        .recipes ==
+                    null
+                ? const Center(child: CircularProgressIndicator())
+                : (recipesProvider.recipes?.isEmpty ?? false)
+                    ? Center(
+                        child: Text(
+                        'No Data Found!',
+                        style: hellixw700().copyWith(fontSize: 16.sp),
+                      ))
+                    : Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: Numbers.appHorizontalPadding),
+                        child: AnimationLimiter(
+                          child: AnimationLimiter(
                             child: FlexibleGridView(
                               axisCount: GridLayoutEnum.twoElementsInRow,
-                              crossAxisSpacing: 20,
-                              mainAxisSpacing: 20,
+                              crossAxisSpacing: 20.w,
+                              mainAxisSpacing: 20.h,
                               children: recipesProvider.recipes!
                                   .map((recipe) => RecipeWidget(recipe: recipe))
                                   .toList(),
                             ),
-                          )),
+                          ),
+                        ))),
       ),
     );
   }

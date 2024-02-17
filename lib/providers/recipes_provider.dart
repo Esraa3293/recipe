@@ -19,6 +19,119 @@ class RecipesProvider extends ChangeNotifier {
 
   List<Recipe>? get recommendedRecipes => _recommendedRecipes;
 
+  List<Recipe>? _favoriteRecipes;
+
+  List<Recipe>? get favoriteRecipes => _favoriteRecipes;
+
+  List<Recipe>? _recentlyViewedRecipes;
+
+  List<Recipe>? get recentlyViewedRecipes => _recentlyViewedRecipes;
+
+  List<Recipe>? _filteredRecipes;
+
+  List<Recipe>? get filteredRecipes => _filteredRecipes;
+
+  // Future<List<Recipe>> filter(List<Recipe> recipesList, int index) async {
+  //   try {
+  //     var result = await FirebaseFirestore.instance
+  //         .collection('recipes')
+  //         .where(MealType.dinner.name.contains(recipesList[index].mealType!))
+  //         .get();
+  //     if (result.docs.isNotEmpty) {
+  //       recipesList = result.docs
+  //           .map((doc) => Recipe.fromJson(doc.data(), doc.id))
+  //           .toList();
+  //     } else {
+  //       recipesList = [];
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //   return recipesList;
+  // }
+
+  var userSelectedValue = {};
+  int servingSliderValue = 1;
+  int timeSliderValue = 25;
+  int caloriesSliderValue = 35;
+
+  onBFChipSelected(bool value) {
+    userSelectedValue["mealType"] = "Breakfast";
+    notifyListeners();
+  }
+
+  onLChipSelected(bool value) {
+    userSelectedValue["mealType"] = "Lunch";
+    notifyListeners();
+  }
+
+  onDChipSelected(bool value) {
+    userSelectedValue["mealType"] = "Dinner";
+    notifyListeners();
+  }
+
+  onServingChanged(double value) {
+    servingSliderValue = value.toInt();
+    userSelectedValue["serving"] = servingSliderValue;
+    notifyListeners();
+  }
+
+  onTimeSliderChanged(double value) {
+    timeSliderValue = value.toInt();
+    userSelectedValue["prepTime"] = timeSliderValue;
+    notifyListeners();
+  }
+
+  onCaloriesSliderChanged(double value) {
+    caloriesSliderValue = value.toInt();
+    userSelectedValue["calories"] = caloriesSliderValue;
+    notifyListeners();
+  }
+
+  onResetPressed() {
+    userSelectedValue = {};
+    servingSliderValue = 0;
+    timeSliderValue = 0;
+    caloriesSliderValue = 0;
+    notifyListeners();
+  }
+
+  Future<void> getFilteredList() async {
+    try {
+      var result = await FirebaseFirestore.instance
+          .collection('recipes')
+          .where("mealType", isEqualTo: userSelectedValue['mealType'])
+          .where("serving", isEqualTo: userSelectedValue['serving'])
+          .where("prepTime", isEqualTo: userSelectedValue['prepTime'])
+          .where("calories", isEqualTo: userSelectedValue['calories'])
+          .get();
+      // var servingFilter =
+      //     await ref.where("serving", isEqualTo: userSelectedValue['serving']);
+      // for (var entry in userSelectedValue.entries) {
+      //   ref.where(entry.key, isEqualTo: entry.value);
+      // }
+      // ref.where("mealType", isEqualTo: userSelectedValue['mealType']);
+      // var result = await ref.get();
+      if (result.docs.isNotEmpty) {
+        _filteredRecipes = result.docs
+            .map((doc) => Recipe.fromJson(doc.data(), doc.id))
+            .toList();
+      } else {
+        _filteredRecipes = [];
+      }
+      notifyListeners();
+    } catch (e) {
+      OverlayToastMessage.show(
+        widget: ToastMessage(
+          message: e.toString(),
+          toastMessageStatus: ToastMessageStatus.failed,
+        ),
+      );
+      _filteredRecipes = [];
+      notifyListeners();
+    }
+  }
+
   Future<void> getRecipes() async {
     try {
       var result = await FirebaseFirestore.instance.collection('recipes').get();
@@ -96,6 +209,99 @@ class RecipesProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> getRecentlyViewedRecipes() async {
+    try {
+      var result = await FirebaseFirestore.instance
+          .collection('recipes')
+          .where("recentlyViewedUsersIds",
+              arrayContains: FirebaseAuth.instance.currentUser?.uid)
+          .get();
+      if (result.docs.isNotEmpty) {
+        _recentlyViewedRecipes = result.docs
+            .map((doc) => Recipe.fromJson(doc.data(), doc.id))
+            .toList();
+      } else {
+        _recentlyViewedRecipes = [];
+      }
+      notifyListeners();
+    } catch (e) {
+      OverlayToastMessage.show(
+        widget: ToastMessage(
+          message: e.toString(),
+          toastMessageStatus: ToastMessageStatus.failed,
+        ),
+      );
+      _recentlyViewedRecipes = [];
+      notifyListeners();
+    }
+  }
+
+  Future<void> addRecentlyViewedRecipeToUser(String recipeId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('recipes')
+          .doc(recipeId)
+          .update({
+        "recentlyViewedUsersIds":
+            FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
+      });
+    } catch (e) {
+      OverlayToastMessage.show(
+        widget: ToastMessage(
+          message: e.toString(),
+          toastMessageStatus: ToastMessageStatus.failed,
+        ),
+      );
+    }
+  }
+
+  Future<void> removeRecentlyViewedRecipeToUser(String recipeId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('recipes')
+          .doc(recipeId)
+          .update({
+        "recentlyViewedUsersIds":
+            FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
+      });
+    } catch (e) {
+      OverlayToastMessage.show(
+        widget: ToastMessage(
+          message: e.toString(),
+          toastMessageStatus: ToastMessageStatus.failed,
+        ),
+      );
+    }
+  }
+
+  Future<void> getFavoriteRecipes() async {
+    try {
+      var result = await FirebaseFirestore.instance
+          .collection('recipes')
+          .where("favoriteUsersIds",
+              arrayContains: FirebaseAuth.instance.currentUser?.uid)
+          .get();
+      if (result.docs.isNotEmpty) {
+        _favoriteRecipes = result.docs
+            .map((doc) => Recipe.fromJson(doc.data(), doc.id))
+            .toList();
+        print(_favoriteRecipes);
+      } else {
+        _favoriteRecipes = [];
+      }
+      notifyListeners();
+    } catch (e) {
+      OverlayToastMessage.show(
+        widget: ToastMessage(
+          message: e.toString(),
+          toastMessageStatus: ToastMessageStatus.failed,
+        ),
+      );
+      _favoriteRecipes = [];
+      notifyListeners();
+    }
+  }
+
   Future<void> addFavoriteToUser(String recipeId, bool isAdd) async {
     try {
       OverlayLoadingProgress.start();
@@ -116,6 +322,7 @@ class RecipesProvider extends ChangeNotifier {
             });
       await updateRecipe(recipeId);
       OverlayLoadingProgress.stop();
+      getFavoriteRecipes();
     } catch (e) {
       OverlayLoadingProgress.stop();
       OverlayToastMessage.show(

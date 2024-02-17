@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:recipe/pages/all_recipes_page.dart';
 import 'package:recipe/utils/colors.dart';
+import 'package:recipe/utils/navigation.dart';
 import 'package:recipe/utils/numbers.dart';
+import 'package:recipe/utils/text_styles.dart';
 
 class SectionHeader extends StatelessWidget {
   final String sectionName;
@@ -11,32 +14,21 @@ class SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          const EdgeInsets.symmetric(horizontal: Numbers.appHorizontalPadding),
+      padding: EdgeInsets.symmetric(horizontal: Numbers.appHorizontalPadding),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             sectionName,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: hellix18w700().copyWith(color: Colors.black),
           ),
           InkWell(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AllRecipesPage(),
-                  ));
+              Navigation.push(context: context, page: const AllRecipesPage());
             },
-            child: const Text(
-              "See All",
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: ColorsConst.primaryColor),
+            child: Text(
+              AppLocalizations.of(context)!.seeAll,
+              style: hellix14w500().copyWith(color: ColorsConst.primaryColor),
             ),
           )
         ],

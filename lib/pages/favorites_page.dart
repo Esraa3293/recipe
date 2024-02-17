@@ -1,12 +1,20 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe/models/recipe.model.dart';
+import 'package:recipe/pages/filter_page.dart';
+import 'package:recipe/pages/side_menu_page.dart';
 import 'package:recipe/providers/recipes_provider.dart';
-
-import '../utils/colors.dart';
-import '../utils/numbers.dart';
+import 'package:recipe/utils/colors.dart';
+import 'package:recipe/utils/numbers.dart';
+import 'package:recipe/utils/text_styles.dart';
+import 'package:recipe/widgets/animated_staggered_list_widget.dart';
+import 'package:recipe/widgets/recommended_widget.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
@@ -16,239 +24,182 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
+  List<Recipe> searchedList = [];
+  late ZoomDrawerController controller;
+  late TextEditingController searchController;
 
   void init() async {
-    await Provider.of<RecipesProvider>(context, listen: false).getRecipes();
+    await Provider.of<RecipesProvider>(context, listen: false)
+        .getFavoriteRecipes();
+  }
+
+  void searchFavorites(String searchedRecipe) {
+    searchedList = Provider.of<RecipesProvider>(context, listen: false)
+        .favoriteRecipes!
+        .where(
+            (recipe) => recipe.title!.toLowerCase().startsWith(searchedRecipe))
+        .toList();
+    setState(() {});
   }
 
   @override
   void initState() {
     init();
+    controller = ZoomDrawerController();
+    searchController = TextEditingController();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
-          "Favorites",
-          style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.w500, color: Colors.black),
+    return ZoomDrawer(
+      controller: controller,
+      disableDragGesture: true,
+      mainScreenTapClose: true,
+      style: DrawerStyle.defaultStyle,
+      menuBackgroundColor: Colors.white,
+      borderRadius: 24.0.r,
+      showShadow: true,
+      angle: -12.0,
+      drawerShadowsBackgroundColor: Colors.grey.shade300,
+      slideWidth: MediaQuery.of(context).size.width * .65,
+      openCurve: Curves.fastOutSlowIn,
+      closeCurve: Curves.bounceIn,
+      menuScreen: const SideMenuPage(),
+      mainScreen: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              controller.toggle!();
+            },
+            icon: const Icon(
+              Icons.sort,
+              color: Colors.black,
+            ),
+            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+          ),
+          title: Text(
+            AppLocalizations.of(context)!.favorites,
+          ),
         ),
-      ),
-      body: Consumer<RecipesProvider>(
-        builder: (context, recipesProvider, child) => recipesProvider.recipes ==
-                null
-            ? const Center(child: CircularProgressIndicator())
-            : (recipesProvider.recipes?.isEmpty ?? false)
-                ? const Center(
-                    child: Text(
-                      "No Data Found!",
-                      style: TextStyle(
-                          color: ColorsConst.primaryColor,
-                          fontWeight: FontWeight.bold),
+        body: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: Numbers.appHorizontalPadding),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      width: 265.w,
+                      height: 35.h,
+                      child: TextField(
+                        controller: searchController,
+                        decoration: InputDecoration(
+                            prefixIcon: const Icon(
+                              Icons.search,
+                              color: ColorsConst.grayColor,
+                            ),
+                            hintText: AppLocalizations.of(context)!.search,
+                            hintStyle: hellix12w400(),
+                            filled: true,
+                            fillColor: ColorsConst.containerBgColor,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.transparent),
+                                borderRadius: BorderRadius.circular(10.r)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.transparent),
+                                borderRadius: BorderRadius.circular(10.r))),
+                        onChanged: (searchedRecipe) {
+                          searchFavorites(searchedRecipe);
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20.w,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FilterPage(),
+                          ));
+                    },
+                    child: Container(
+                      width: 35.w,
+                      height: 35.h,
+                      decoration: BoxDecoration(
+                          color: ColorsConst.containerBgColor,
+                          borderRadius: BorderRadius.circular(10.r)),
+                      child: const Icon(Icons.tune),
                     ),
                   )
-                : ListView.separated(
-                    itemBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: Numbers.appHorizontalPadding),
-                          child: Stack(
-                            alignment: Alignment.topRight,
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: ColorsConst.containerBgColor),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 100,
-                                      height: 100,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: CachedNetworkImage(
-                                          fit: BoxFit.cover,
-                                          imageUrl: recipesProvider
-                                                  .recipes![index].imagePath ??
-                                              "",
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            recipesProvider
-                                                    .recipes![index].mealType ??
-                                                "",
-                                            style: const TextStyle(
-                                              color: ColorsConst.titleColor,
-                                              fontSize: 8,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 3,
-                                          ),
-                                          Text(
-                                            recipesProvider
-                                                    .recipes![index].title ??
-                                                "",
-                                            maxLines: 1,
-                                            textScaleFactor: .8,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 6,
-                                          ),
-                                          Row(
-                                            children: [
-                                              RatingBar.builder(
-                                                initialRating: 3,
-                                                minRating: 1,
-                                                direction: Axis.horizontal,
-                                                allowHalfRating: true,
-                                                unratedColor:
-                                                    ColorsConst.grayColor,
-                                                itemCount: 5,
-                                                itemSize: 15,
-                                                itemBuilder: (context, _) =>
-                                                    const Icon(
-                                                  Icons.star,
-                                                  color:
-                                                      ColorsConst.primaryColor,
-                                                ),
-                                                onRatingUpdate: (rating) {
-                                                  print(rating);
-                                                },
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              Text(
-                                                recipesProvider.recipes![index]
-                                                        .nutFacts ??
-                                                    "",
-                                                style: const TextStyle(
-                                                    fontSize: 8,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    color: ColorsConst
-                                                        .primaryColor),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 7,
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.access_time,
-                                                size: 20,
-                                                color: ColorsConst.grayColor,
-                                              ),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                recipesProvider.recipes![index]
-                                                        .prepTime ??
-                                                    "",
-                                                style: const TextStyle(
-                                                  fontSize: 8,
-                                                  fontWeight: FontWeight.normal,
-                                                  color: ColorsConst.grayColor,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 17,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.room_service_outlined,
-                                                    size: 20,
-                                                    color:
-                                                        ColorsConst.grayColor,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Text(
-                                                    "${recipesProvider.recipes![index].serving}  Serving",
-                                                    style: const TextStyle(
-                                                      fontSize: 8,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      color:
-                                                          ColorsConst.grayColor,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 25.h,
+            ),
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('recipes')
+                  .where("favoriteUsersIds",
+                      arrayContains: FirebaseAuth.instance.currentUser?.uid)
+                  .snapshots(),
+              builder: (context, snapshots) {
+                if (snapshots.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshots.hasError) {
+                  return const Center(child: Text("Something went wrong!"));
+                } else if (snapshots.hasData) {
+                  if (snapshots.data?.docs.isNotEmpty ?? false) {
+                    List<Recipe> recipes = snapshots.data?.docs
+                            .map((e) => Recipe.fromJson(e.data(), e.id))
+                            .toList() ??
+                        [];
+                    return Expanded(
+                      child: AnimationLimiter(
+                        child: ListView.separated(
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.only(bottom: 10).r,
+                            physics: const BouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
+                            itemBuilder: (context, index) =>
+                                AnimatedStaggeredList(
+                                    widget: searchController.text.isEmpty
+                                        ? RecommendedWidget(
+                                            recipe: recipes[index])
+                                        : RecommendedWidget(
+                                            recipe: searchedList[index]),
+                                    index: index),
+                            separatorBuilder: (context, index) => const Divider(
+                                  color: Colors.transparent,
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: InkWell(
-                                  onTap: () {
-                                    recipesProvider.addFavoriteToUser(
-                                        recipesProvider.recipes![index].docId!,
-                                        !(recipesProvider.recipes![index]
-                                                .favoriteUsersIds
-                                                ?.contains(FirebaseAuth.instance
-                                                    .currentUser?.uid) ??
-                                            false));
-                                  },
-                                  child: (recipesProvider
-                                              .recipes![index].favoriteUsersIds
-                                              ?.contains(FirebaseAuth
-                                                  .instance.currentUser?.uid) ??
-                                          false
-                                      ? const Icon(
-                                    Icons.favorite_rounded,
-                                          size: 30,
-                                          color: ColorsConst.primaryColor,
-                                        )
-                                      : const Icon(
-                                    Icons.favorite_border_rounded,
-                                          size: 30,
-                                          color: ColorsConst.grayColor,
-                                        )),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                    separatorBuilder: (context, index) => const Divider(
-                          color: Colors.transparent,
-                        ),
-                    itemCount: recipesProvider.recipes!.length),
+                            itemCount: searchController.text.isEmpty
+                                ? recipes.length
+                                : searchedList.length),
+                      ),
+                    );
+                  } else {
+                    return Center(
+                        child: Text(
+                      "No Favorite Recipes",
+                      style: hellix16w500()
+                          .copyWith(color: ColorsConst.primaryColor),
+                    ));
+                  }
+                } else {
+                  return const Center(child: Text("No Favorite Recipes"));
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

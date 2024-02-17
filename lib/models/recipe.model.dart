@@ -1,47 +1,58 @@
 class Recipe {
   String? docId;
   bool? isFresh;
-  String? imagePath;
+  String? imageUrl;
   String? title;
   String? description;
   String? mealType;
-  String? nutFacts;
-  String? prepTime;
+  int? prepTime;
+  int? calories;
   int? serving;
-  int? rating;
+  num? rate;
   List<String>? ingred;
   List<String>? favoriteUsersIds;
+  List<String>? recentlyViewedUsersIds;
+  List<String>? directions;
 
   Recipe(
       {this.docId,
       this.isFresh,
-      this.imagePath,
+      this.imageUrl,
       this.title,
       this.description,
       this.mealType,
-      this.nutFacts,
       this.prepTime,
+      this.calories,
       this.serving,
-      this.rating,
+      this.rate,
       this.ingred,
-      this.favoriteUsersIds});
+      this.favoriteUsersIds,
+      this.recentlyViewedUsersIds,
+      this.directions});
 
   Recipe.fromJson(Map<String, dynamic> data, [String? id]) {
     docId = id;
     isFresh = data['isFresh'];
-    imagePath = data['imagePath'];
+    imageUrl = data['imageUrl'];
     title = data['title'];
     description = data['description'];
     mealType = data['mealType'];
-    nutFacts = data['numOfCalories'];
+    calories = data['calories'];
     prepTime = data['prepTime'];
     serving = data['serving'];
-    rating = data['rating'];
+    rate = data['rate'];
     ingred = data['ingred'] != null
         ? List<String>.from(data['ingred'].map((e) => e.toString()))
         : null;
     favoriteUsersIds = data['favoriteUsersIds'] != null
         ? List<String>.from(data['favoriteUsersIds'].map((e) => e.toString()))
+        : null;
+    recentlyViewedUsersIds = data['recentlyViewedUsersIds'] != null
+        ? List<String>.from(
+            data['recentlyViewedUsersIds'].map((e) => e.toString()))
+        : null;
+    directions = data['directions'] != null
+        ? List<String>.from(data['directions'].map((e) => e.toString()))
         : null;
   }
 
@@ -49,16 +60,18 @@ class Recipe {
     return {
       "docId": docId,
       "isFresh": isFresh,
-      "imagePath": imagePath,
+      "imageUrl": imageUrl,
       "title": title,
       "description": description,
       "mealType": mealType,
-      "numOfCalories": nutFacts,
       "prepTime": prepTime,
+      "calories": calories,
       "serving": serving,
-      "rating": rating,
+      "rate": rate,
       "ingred": ingred,
       "favoriteUsersIds": favoriteUsersIds,
+      "recentlyViewedUsersIds": recentlyViewedUsersIds,
+      "directions": directions
     };
   }
 }

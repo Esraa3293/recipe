@@ -1,9 +1,11 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_kit/overlay_kit.dart';
-import 'package:recipe/pages/home.dart';
-import 'package:recipe/pages/login.dart';
-import 'package:recipe/pages/sign_up.dart';
+import 'package:recipe/pages/home_page.dart';
+import 'package:recipe/pages/sign_in_page.dart';
+import 'package:recipe/pages/sign_up_page.dart';
 import 'package:recipe/pages/splash_screen.dart';
 import 'package:recipe/utils/toast_message_status.dart';
 import 'package:recipe/widgets/toast_message_widget.dart';
@@ -40,7 +42,7 @@ class AppAuthProvider extends ChangeNotifier {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => const SignUp(),
+          builder: (_) => const SignUpPage(),
         ));
   }
 
@@ -49,8 +51,54 @@ class AppAuthProvider extends ChangeNotifier {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
+          builder: (_) => const SignInPage(),
         ));
+  }
+
+  Future<void> uploadImage() async {
+    try {
+      OverlayLoadingProgress.start();
+      var imageResult = await FilePicker.platform
+          .pickFiles(type: FileType.image, withData: true);
+      var reference = FirebaseStorage.instance
+          .ref('profile/${imageResult?.files.first.name}');
+      if (imageResult?.files.first.bytes != null) {
+        var uploadResult = await reference.putData(
+            imageResult!.files.first.bytes!,
+            SettableMetadata(contentType: 'image/png'));
+        if (uploadResult.state == TaskState.success) {
+          print(
+              'Image Uploaded Successfully ${await reference.getDownloadURL()}');
+        }
+      }
+      OverlayLoadingProgress.stop();
+      // String downloadUrl = await reference.getDownloadURL();
+      // return downloadUrl;
+    } catch (e) {
+      OverlayToastMessage.show(
+        widget: ToastMessage(
+          message: e.toString(),
+          toastMessageStatus: ToastMessageStatus.failed,
+        ),
+      );
+    }
+  }
+
+  void updateProfileImage() async {
+    try {
+      if (FirebaseAuth.instance.currentUser?.uid != null) {
+        await FirebaseAuth.instance.currentUser?.updatePhotoURL(
+            "https://firebasestorage.googleapis.com/v0/b/recipe-a3645.appspot.com/o/profile%2FFB_IMG_1708094063787.jpg?alt=media&token=a943eada-483f-41da-a2d7-75e357b29002");
+      }
+    } catch (e) {
+      OverlayToastMessage.show(
+        widget: ToastMessage(
+          message: e.toString(),
+          toastMessageStatus: ToastMessageStatus.failed,
+        ),
+      );
+    }
+    notifyListeners();
   }
 
   Future<void> signUp(BuildContext context) async {
@@ -67,7 +115,7 @@ class AppAuthProvider extends ChangeNotifier {
           providerDispose();
           OverlayToastMessage.show(
             widget: const ToastMessage(
-              message: 'Successfully Registered',
+              message: 'Registered Successfully',
               toastMessageStatus: ToastMessageStatus.success,
             ),
           );
@@ -75,7 +123,7 @@ class AppAuthProvider extends ChangeNotifier {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const HomeScreen(),
+                  builder: (context) => const HomePage(),
                 ));
           }
         }
@@ -115,7 +163,7 @@ class AppAuthProvider extends ChangeNotifier {
           providerDispose();
           OverlayToastMessage.show(
             widget: const ToastMessage(
-              message: 'Successfully Signed In',
+              message: 'Signed In Successfully',
               toastMessageStatus: ToastMessageStatus.success,
             ),
           );
@@ -123,7 +171,7 @@ class AppAuthProvider extends ChangeNotifier {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const HomeScreen(),
+                  builder: (context) => const HomePage(),
                 ));
           }
         }
@@ -163,6 +211,29 @@ class AppAuthProvider extends ChangeNotifier {
     } catch (e) {
       OverlayLoadingProgress.stop();
       print(e);
+    }
+  }
+
+  Future<void> verifyEmail() async {
+    try {
+      OverlayLoadingProgress.start();
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: emailController!.text);
+      OverlayToastMessage.show(
+        widget: const ToastMessage(
+          message: "Password Reset Email Sent",
+          toastMessageStatus: ToastMessageStatus.success,
+        ),
+      );
+      OverlayLoadingProgress.stop();
+    } on FirebaseAuthException catch (e) {
+      OverlayToastMessage.show(
+        widget: ToastMessage(
+          message: e.toString(),
+          toastMessageStatus: ToastMessageStatus.failed,
+        ),
+      );
+      OverlayLoadingProgress.stop();
     }
   }
 

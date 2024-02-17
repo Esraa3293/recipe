@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:recipe/pages/home.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:recipe/pages/home_page.dart';
 import 'package:recipe/pages/intro_page.dart';
 import 'package:recipe/utils/images.dart';
 
@@ -35,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (_) => const HomeScreen(),
+              builder: (_) => const HomePage(),
             ));
       }
     });
@@ -58,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.all(50.0),
+              padding: const EdgeInsets.all(50.0).r,
               child: Image.asset(ImagesPath.baseHeader),
             ),
             const CircularProgressIndicator()
