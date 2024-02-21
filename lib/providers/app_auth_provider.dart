@@ -88,7 +88,7 @@ class AppAuthProvider extends ChangeNotifier {
     try {
       if (FirebaseAuth.instance.currentUser?.uid != null) {
         await FirebaseAuth.instance.currentUser?.updatePhotoURL(
-            "https://firebasestorage.googleapis.com/v0/b/recipe-a3645.appspot.com/o/profile%2FFB_IMG_1708094063787.jpg?alt=media&token=a943eada-483f-41da-a2d7-75e357b29002");
+            "https://firebasestorage.googleapis.com/v0/b/recipe-a3645.appspot.com/o/profile%2FFB_IMG_1708094063787.jpg?alt=media&token=9bcf9edd-18d9-4675-a4f7-2304ff31a2db");
       }
     } catch (e) {
       OverlayToastMessage.show(

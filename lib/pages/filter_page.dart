@@ -163,7 +163,7 @@ class _FilterPageState extends State<FilterPage> {
                 },
                 min: 0,
                 max: 750,
-                divisions: 200,
+                divisions: 325,
                 label: recipeProvider.timeSliderValue.toString(),
                 activeColor: ColorsConst.primaryColor,
                 inactiveColor: ColorsConst.grayColor,
