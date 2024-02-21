@@ -143,7 +143,7 @@ class _FilterPageState extends State<FilterPage> {
                 },
                 min: 0,
                 max: 10,
-                divisions: 9,
+                divisions: 10,
                 label: recipeProvider.servingSliderValue.round().toString(),
                 activeColor: ColorsConst.primaryColor,
                 inactiveColor: ColorsConst.grayColor,

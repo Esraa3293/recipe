@@ -32,9 +32,9 @@ class RecipesProvider extends ChangeNotifier {
   List<Recipe>? get filteredRecipes => _filteredRecipes;
 
   var userSelectedValue = {};
-  int servingSliderValue = 1;
-  int timeSliderValue = 25;
-  int caloriesSliderValue = 35;
+  int servingSliderValue = 0;
+  int timeSliderValue = 0;
+  int caloriesSliderValue = 0;
 
   onBFChipSelected(bool value) {
     userSelectedValue["mealType"] = "Breakfast";
